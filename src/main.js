@@ -1,8 +1,9 @@
 import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand } from './commands/general_purpose.js';
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/general_voice.js';
-import { blacklistcommand, setnick  } from './commands/general_staff.js';
+import { blacklistcommand, setnick  } from './commands/general_staff.js'; //Working on these commands
+import config from './config.js';
 import Discord from 'discord.js';
-import commando from 'discord.js-commando';
+//Getting right imports, aswell as commands in other scripts
 
 
 
@@ -19,8 +20,8 @@ client.on('ready', () => {
 // Get your bot's secret token from:
 // https://discordapp.com/developers/applications/
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
-const bot_secret_token = "Insert_Secret_Token"
-const prefix = "?"
+const bot_secret_token = config.token
+const prefix = config.prefix
 
 client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) { // Prevent bot from responding to its own messages
@@ -35,7 +36,7 @@ client.on('message', (receivedMessage) => {
 
 
 async function processCommand(receivedMessage) {
-    var commandlist = ["``` ?roast - To roast someone", 
+    var commandlist = ["``` ?roast - To roast someone",  //List of all working comands
     "\n ?ttsroast - to roast someone in tts", 
     "\n ?compliment - to make up for all the mean things you were saying", 
     "\n ?ttscompliment - to compliment someone in tts",
@@ -63,7 +64,7 @@ async function processCommand(receivedMessage) {
     console.log("Command received: " + primaryCommand);
     console.log("args: " + args); // There may not be any args
 
-    if (primaryCommand == "roast") {
+    if (primaryCommand == "roast") { //Runnning said commands 
         roastcommand(args, receivedMessage);
 
     } else if (primaryCommand == "ttsroast"){

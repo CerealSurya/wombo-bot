@@ -16,6 +16,7 @@
     "discord-tts": "^1.0.1",
     "discord.js": "^12.3.1",
     "discord.js-commando": "^0.10.0",
+    "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "ytdl-core": "^3.2.2"
   }
