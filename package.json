@@ -11,7 +11,7 @@
   ],
   "author": "sjalapati42@gmail.com",
   "type": "module",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord-tts": "^1.0.1",
     "discord.js": "^12.3.1",
