@@ -123,7 +123,7 @@ async function processCommand(receivedMessage) {
         // blacklistcommand(args, receivedMessage);
      }
      else if(primaryCommand == "introduce"){
-        receivedMessage.channel.send('Hi, I am Wombo bot, and I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️ 😏 \ntype ?help if you want a list of commands \ntype ?request if you want to request a new feature or roast to be added')
+        receivedMessage.channel.send('```Hi, I am Wombo bot, and I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️ 😏\n\ntype ?help if you want a list of commands```')
      }
      else if(primaryCommand == "earrape"){
         earrapecommand(args, receivedMessage);
