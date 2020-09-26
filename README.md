@@ -2,9 +2,9 @@
 
 ## What it does
 A discord bot that does some little things. It can roast, and compliment people in a variety of forms. Aswell as some other stuff.
-![wow](misc/wombo_ss_0)
+![](misc/wombo_ss_0)
 ## Bot Invite Links
-- top.gg pending
+- [top.gg](https://top.gg/bot/707001510231277669)
 - [Discord Bot List](https://discordbotlist.com/bots/wombo)
 
 ## Wombo's official server link
@@ -25,7 +25,6 @@ If you want to setup Wombo-Bot for youself here it is
 ## Coming Soon
 - Some staff commands so that no one abuses the power of Wombo bot
 - Adding a music command, so the bot is not totally annoying
-- Working on getting the bot to stay on 24/7
 - Going to add an introductory message whenever it joins a server
 
 ## Developer's Note
