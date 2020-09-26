@@ -2,9 +2,9 @@
   "name": "wombo-bot",
   "version": "1.0.0",
   "description": "Roasts people, and does other fun stuff",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node src/main.js"
   },
   "keywords": [
     "jalapeno, roast, toxic, music"
