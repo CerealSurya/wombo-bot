@@ -1,1 +1,1 @@
-worker node src/main.js
+node worker src/main.js
