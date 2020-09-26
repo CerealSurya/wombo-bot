@@ -1,7 +1,7 @@
-import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand } from './commands/general_purpose.js';
-import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/general_voice.js';
-import { blacklistcommand, setnick  } from './commands/general_staff.js'; //Working on these commands
-import config from './config.js';
+import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand } from './src/commands/general_purpose.js';
+import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './src/commands/general_voice.js';
+import { blacklistcommand, setnick  } from './src/commands/general_staff.js'; //Working on these commands
+import config from './src/config.js';
 import Discord from 'discord.js';
 //Getting right imports, aswell as commands in other scripts
 
