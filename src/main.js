@@ -51,7 +51,7 @@ async function processCommand(receivedMessage) {
     "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
 
     //TODO: Set up an intro message, wnenever it joins a server it says hi
-    "\n[Note - there are not much vcroasts and they are not well maintained]",
+    "\n[Note - the voicechat commands (vcroast, earrape) are not working right now. It will be working shortly or maybe not.]",
     "```"];
     let fullCommand = receivedMessage.content.substr(1); // Remove the leading exclamation mark
     let sentence = receivedMessage.content.substr(8); // gets everything after the request
