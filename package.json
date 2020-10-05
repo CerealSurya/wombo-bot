@@ -13,9 +13,10 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/node-pre-gyp": "^0.1.0",
+    "@discordjs/opus": "^0.3.2",
     "discord-tts": "^1.0.1",
     "discord.js": "^12.3.1",
-    "@discordjs/opus": "^0.3.2",
     "discord.js-commando": "^0.10.0",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
