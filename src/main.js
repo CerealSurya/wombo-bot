@@ -1,9 +1,10 @@
-import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand } from './commands/general_purpose.js';
-import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/general_voice.js';
+import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments } from './commands/general_purpose.js';
+import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice_general.js';
 import { setnick  } from './commands/staff/staff_general.js'; 
 import { blacklistcommand, roleName } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
+
 //Getting right imports, aswell as commands in other scripts
 
 
@@ -41,11 +42,12 @@ async function processCommand(receivedMessage) {
     "\n ?compliment - to make up for all the mean things you were saying", 
     "\n ?ttscompliment - to compliment someone in tts",
     "\n ?coinflip - to flip a coin", 
-    "\n ?vcroast - joins the vc and flames up people", 
+    "\n ?vcroast - joins the vc and flames up whoever you want", 
+    "\n ?vccompliment - join the vc and compliments whoever you want",
     "\n ?disconnect - to disc from a vc", 
     "\n ?join - to join a vc",
     "\n ?request - use this to request things that you want added to the bot. Like some more roasts or a new feature.",
-    "\n ?setnick - if you have Manage nickname perms then you can use this command to change someone in the servers nick name",
+    // "\n ?setnick - if you have Manage nickname perms then you can use this command to change someone in the servers nick name",
     "\n ?roastidea - DMs you a roast idea so you can flame your friends",
     "\n ?complimentidea - DMs you a compliment idea so you can make up for the mean things you said",
     "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
@@ -68,14 +70,14 @@ async function processCommand(receivedMessage) {
 
     if (typeof role === 'object'){
         if( !receivedMessage.member.roles.cache.some(x => x.name === roleName) ){
-            commands(primaryCommand,args, receivedMessage );
+            commands(primaryCommand,args, receivedMessage, sentence );
         }
         else{
             receivedMessage.channel.send('no');
         };
     } 
     else{
-        commands(primaryCommand,args, receivedMessage );
+        commands(primaryCommand,args, receivedMessage, sentence );
     };
        
    
@@ -83,16 +85,19 @@ async function processCommand(receivedMessage) {
 
 
 
-function commands(primaryCommand, args, receivedMessage){
+function commands(primaryCommand, args, receivedMessage, sentence){
     if (primaryCommand == "roast") { //Runnning said commands 
         roastcommand(args, receivedMessage);
 
     } else if (primaryCommand == "ttsroast"){
-
         ttsroastcommand(args, receivedMessage);
-    } else if(primaryCommand == "vcroast"){
 
-        vcroastcommand(args ,receivedMessage)
+    } else if(primaryCommand == "vcroast"){
+        vcroastcommand(args ,receivedMessage, roasts);
+
+    } else if(primaryCommand == "vccompliment"){
+
+        vcroastcommand(args, receivedMessage, compliments)
     }  else if(primaryCommand == "compliment"){
 
         compliment(args, receivedMessage);

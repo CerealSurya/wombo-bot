@@ -1,19 +1,19 @@
 
 import ytdl from 'ytdl-core';
 import discordTTS from 'discord-tts';
-import { roasts, compliments } from './general_purpose.js'
 
-export function vcroastcommand(args ,receivedMessage){
+
+export function vcroastcommand(args ,receivedMessage, usecase){
     if(receivedMessage.member.voice.channel){
         if(!receivedMessage.guild.voiceConnection && args.length > 0){
             receivedMessage.member.voice.channel.join()
                 .then(connection =>{
-                    receivedMessage.channel.send("Starting to roast these plebs");
+                    receivedMessage.channel.send("Aight lets do this");
 
                     const mention = receivedMessage.mentions.users.first();
                     const username = mention.username;
                     
-                    const stream = discordTTS.getVoiceStream(username +roasts[(Math.floor(Math.random() * roasts.length))]);
+                    const stream = discordTTS.getVoiceStream(username +usecase[(Math.floor(Math.random() * usecase.length))]);
                     const dispatcher = connection.play(stream);
                     dispatcher.on("end", end => {receivedMessage.member.voice.channel.leave()});
                 })
