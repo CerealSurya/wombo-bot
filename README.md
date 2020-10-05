@@ -2,10 +2,12 @@
 
 ## What it does
 A discord bot that does some little things. It can roast, and compliment people in a variety of forms. Aswell as some other stuff.
+
 ![](misc/wombo_ss_0.png)
 ## Bot Invite Links
-- [top.gg](https://top.gg/bot/707001510231277669)
 - [Discord Bot List](https://discordbotlist.com/bots/wombo)
+<script src="https://discordbotlist.com/widget/index.js" async></script>
+<dbl-widget bot-id="bot-wombo"></dbl-widget>
 
 ## Wombo's official server link
 - [Wombo's Wallet](https://discord.gg/VZp2tFD)
