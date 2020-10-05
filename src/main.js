@@ -1,6 +1,7 @@
 import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand } from './commands/general_purpose.js';
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/general_voice.js';
-import { blacklistcommand, setnick  } from './commands/general_staff.js'; //Working on these commands
+import { setnick  } from './commands/staff/staff_general.js'; 
+import { blacklistcommand, roleName } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
 //Getting right imports, aswell as commands in other scripts
@@ -12,7 +13,6 @@ client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
     client.user.setActivity('you type ?help', {type: 'WATCHING'}).catch(console.error);
 
-    
 })
 
 
@@ -49,6 +49,7 @@ async function processCommand(receivedMessage) {
     "\n ?roastidea - DMs you a roast idea so you can flame your friends",
     "\n ?complimentidea - DMs you a compliment idea so you can make up for the mean things you said",
     "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
+    "\n ?ignore - If you want to stop someone to not be able to use me entirely then use this command",
 
     //TODO: Set up an intro message, wnenever it joins a server it says hi
     "\n[Note - the voicechat commands (vcroast, earrape) are not working right now. It will be working shortly or maybe not.]",
@@ -58,12 +59,31 @@ async function processCommand(receivedMessage) {
     let splitCommand = fullCommand.split(" "); // Split the message up in to pieces for each space
     let primaryCommand = splitCommand[0]; // The first word directly after the exclamation is the command
     let args = splitCommand.slice(1); // All other words are args/parameters/options for the command
-
-
+    let user = receivedMessage.author;
+    let member = receivedMessage.guild.member(user);
+    let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
 
     console.log("Command received: " + primaryCommand);
     console.log("args: " + args); // There may not be any args
 
+    if (typeof role === 'object'){
+        if( !receivedMessage.member.roles.cache.some(x => x.name === roleName) ){
+            commands(primaryCommand,args, receivedMessage );
+        }
+        else{
+            receivedMessage.channel.send('no');
+        };
+    } 
+    else{
+        commands(primaryCommand,args, receivedMessage );
+    };
+       
+   
+}
+
+
+
+function commands(primaryCommand, args, receivedMessage){
     if (primaryCommand == "roast") { //Runnning said commands 
         roastcommand(args, receivedMessage);
 
@@ -84,7 +104,7 @@ async function processCommand(receivedMessage) {
         receivedMessage.reply("Aight just DM'd u my commands");
         receivedMessage.author.send("Here are my commands: \n" + commandlist);
     }
-     else if(primaryCommand == "request"){
+    else if(primaryCommand == "request"){
         if (args.length == 0){
             receivedMessage.reply('You need to type in stuff that you want to request dum dum');
         }
@@ -95,12 +115,12 @@ async function processCommand(receivedMessage) {
             receivedMessage.author.send('I have put in your request');
         };
      }
-     else if(primaryCommand == "disconnect" || primaryCommand == "leave"){
+    else if(primaryCommand == "disconnect" || primaryCommand == "leave"){
         disconnectcommand(args, receivedMessage);
      }
-     else if(primaryCommand == "ttscompliment"){
+    else if(primaryCommand == "ttscompliment"){
         ttscomplimentcommand(args, receivedMessage)
-    } else if(primaryCommand == "coinflip"){
+    }else if(primaryCommand == "coinflip"){
         var x = Math.floor(Math.random() * 2)
         if(x==0){
             receivedMessage.channel.send("Heads");
@@ -109,30 +129,25 @@ async function processCommand(receivedMessage) {
             receivedMessage.channel.send("Tails");
         };
     }
-     else if(primaryCommand == "setnick"){
+    else if(primaryCommand == "setnick"){
          return
         // setnick(args, receivedMessage);
-    } else if(primaryCommand == "roastidea"){
+    }else if(primaryCommand == "roastidea"){
         roastidea(args, receivedMessage);
     }
-     else if(primaryCommand == "complimentidea"){
+    else if(primaryCommand == "complimentidea"){
         complimentidea(args, receivedMessage);
      }
-     else if(primaryCommand == "blacklist" || primaryCommand == "ignore"){
-        return;
-        // blacklistcommand(args, receivedMessage);
+    else if(primaryCommand == "blacklist" || primaryCommand == "ignore"){
+        blacklistcommand(args, receivedMessage);
      }
-     else if(primaryCommand == "introduce"){
+    else if(primaryCommand == "introduce"){
         receivedMessage.channel.send('```Hi, I am Wombo bot, and I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️ 😏\n\ntype ?help if you want a list of commands```')
      }
-     else if(primaryCommand == "earrape"){
+    else if(primaryCommand == "earrape"){
         earrapecommand(args, receivedMessage);
      }
-       
-   
 }
-
-
 client.login(bot_secret_token);
 
 
