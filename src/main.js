@@ -7,7 +7,7 @@ import Discord from 'discord.js';
 
 //Getting right imports, aswell as commands in other scripts
 
-
+//TODO: SO um I cannot illegally get this discord opus in my package files so vc no work. 
 
 const client = new Discord.Client()
 client.on('ready', () => {
@@ -34,7 +34,6 @@ client.on('message', (receivedMessage) => {
     }
 })
 
-//TODO neeed to get the introduce feature to ring when wombo joins a server
 
 async function processCommand(receivedMessage) {
     var commandlist = ["``` ?roast - To roast someone",  //List of all working comands
@@ -52,6 +51,7 @@ async function processCommand(receivedMessage) {
     "\n ?complimentidea - DMs you a compliment idea so you can make up for the mean things you said",
     "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
     "\n ?ignore - If you want to stop someone to not be able to use me entirely then use this command",
+    "\n ?unignore - If you want to allow someone that you previously ignored to use Wombo again",
 
     //TODO: Set up an intro message, wnenever it joins a server it says hi
     "\n[Note - the voicechat commands (vcroast, earrape) are not working right now. It will be working shortly or maybe not.]",
@@ -144,7 +144,10 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         complimentidea(args, receivedMessage);
      }
     else if(primaryCommand == "blacklist" || primaryCommand == "ignore"){
-        blacklistcommand(args, receivedMessage);
+        blacklistcommand(args, receivedMessage, 'blacklist');
+     }
+    else if(primaryCommand == "unblacklist" || primaryCommand == "unignore"){
+        blacklistcommand(args, receivedMessage, 'unblacklist');
      }
     else if(primaryCommand == "introduce"){
         receivedMessage.channel.send('```Hi, I am Wombo bot, and I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️ 😏\n\ntype ?help if you want a list of commands```')
