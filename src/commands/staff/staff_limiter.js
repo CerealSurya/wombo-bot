@@ -53,7 +53,7 @@ export async function blacklistcommand(args, receivedMessage, command){
                     receivedMessage.channel.send(`Noted from now on I will ignore ${member}'s commands`);
                 }
                 else if(command === 'unblacklist' && counter == 0){
-                    receivedMessage.channel.send(`Aight fine, I'll listen to ${member}'s from now on.`);
+                    receivedMessage.channel.send(`Aight fine, I'll listen to ${member}'s commands from now on.`);
                 };
             }
             catch(err){

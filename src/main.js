@@ -1,6 +1,7 @@
-import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments } from './commands/general_purpose.js';
-import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice_general.js';
+import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments } from './commands/general/general_purpose.js';
+import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
 import { setnick  } from './commands/staff/staff_general.js'; 
+import { general_help, staff_help, voice_help } from './commands/help.js';
 import { blacklistcommand, roleName } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
@@ -36,7 +37,7 @@ client.on('message', (receivedMessage) => {
 
 
 async function processCommand(receivedMessage) {
-    var commandlist = ["``` ?roast - To roast someone",  //List of all working comands
+    var commandlist = "``` ?roast - To roast someone"  //List of all working comands
     "\n ?ttsroast - to roast someone in tts", 
     "\n ?compliment - to make up for all the mean things you were saying", 
     "\n ?ttscompliment - to compliment someone in tts",
@@ -51,11 +52,15 @@ async function processCommand(receivedMessage) {
     "\n ?complimentidea - DMs you a compliment idea so you can make up for the mean things you said",
     "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
     "\n ?ignore - If you want to stop someone to not be able to use me entirely then use this command",
-    "\n ?unignore - If you want to allow someone that you previously ignored to use Wombo again",
+    "\n ?unignore - If you want to allow someone that you previously ignored to use Wombo again";
+
+    var general_command = []
+
+    var voicechat_command = []
+
+    var misc_command = []
 
     //TODO: Set up an intro message, wnenever it joins a server it says hi
-    "\n[Note - the voicechat commands (vcroast, earrape) are not working right now. It will be working shortly or maybe not.]",
-    "```"];
     let fullCommand = receivedMessage.content.substr(1); // Remove the leading exclamation mark
     let sentence = receivedMessage.content.substr(8); // gets everything after the request
     let splitCommand = fullCommand.split(" "); // Split the message up in to pieces for each space
@@ -105,9 +110,26 @@ function commands(primaryCommand, args, receivedMessage, sentence){
 
         joincommand(args, receivedMessage);
     } 
-    else if(primaryCommand == "help"){
-        receivedMessage.reply("Aight just DM'd u my commands");
-        receivedMessage.author.send("Here are my commands: \n" + commandlist);
+    else if(primaryCommand == "help" && receivedMessage.content.substr(6) == ''){
+        const embed = new Discord.MessageEmbed()
+        .setTitle('Help')
+        .addField('`?help general`', 'any general commands', true)
+        .addField('`?help staff`', 'any staff     commands', true)
+        .addField('`?help voice`', 'any voicechat commands', true)
+        .setThumbnail(client.user.avatarURL())
+        .setColor(0x99ccff)
+        receivedMessage.author.send(embed);
+        receivedMessage.reply("Just DM'd the commands");
+
+    }
+    else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'general'){
+        general_help(receivedMessage);
+    }
+    else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'staff'){
+        staff_help(receivedMessage);
+    }
+    else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'voice'){
+        voice_help(receivedMessage);
     }
     else if(primaryCommand == "request"){
         if (args.length == 0){
@@ -150,8 +172,15 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         blacklistcommand(args, receivedMessage, 'unblacklist');
      }
     else if(primaryCommand == "introduce"){
-        receivedMessage.channel.send('```Hi, I am Wombo bot, and I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️ 😏\n\ntype ?help if you want a list of commands```')
-     }
+        const anotherembed = new Discord.MessageEmbed()
+        .setTitle('Hello')
+        .addField('Hi, I am Wombo bot', 'I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️')
+        .addField('\u200b', '\u200b')
+        .addField('type ?help ', 'if you want a list of commands')
+        .setThumbnail(client.user.avatarURL())
+        .setColor(0x99ccff)
+        receivedMessage.channel.send(anotherembed);
+    }
     else if(primaryCommand == "earrape"){
         earrapecommand(args, receivedMessage);
      }
