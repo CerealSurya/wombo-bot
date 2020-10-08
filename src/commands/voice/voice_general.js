@@ -51,6 +51,7 @@ export function earrapecommand(argument, receivedMessage){
 export function disconnectcommand(args, receivedMessage){
     if(receivedMessage.member.voice.channel){
         if(!receivedMessage.guild.voiceConnection){
+            receivedMessage.channel.send('okay bye 📭 ')
             receivedMessage.member.voice.channel.leave();
         }
 
@@ -64,6 +65,7 @@ export function disconnectcommand(args, receivedMessage){
 export function joincommand(args, receivedMessage){
     if(receivedMessage.member.voice.channel){
         if(!receivedMessage.guild.voiceConnection){
+            receivedMessage.channel.send('Okay I joined 👍')
             receivedMessage.member.voice.channel.join();
 
         }

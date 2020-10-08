@@ -114,7 +114,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         const embed = new Discord.MessageEmbed()
         .setTitle('Help')
         .addField('`?help general`', 'any general commands', true)
-        .addField('`?help staff`', 'any staff     commands', true)
+        .addField('`?help staff`', 'any staff\ncommands', true)
         .addField('`?help voice`', 'any voicechat commands', true)
         .setThumbnail(client.user.avatarURL())
         .setColor(0x99ccff)
