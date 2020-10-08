@@ -92,7 +92,7 @@ export async function voteblacklist(args, receivedMessage){
         let message_counter = false;
         function private_listen(args, receivedMessage){
             receivedMessage.channel.send(`ignore vote ${member.user.username} ${counter}/5\n(type ?yes to vote yes | type ?no to vote no) `).then(() => {
-                const filter = m => receivedMessage.author.id === m.author.id; //!Make sure you change this to unequal before launch
+                const filter = m => receivedMessage.author.id != m.author.id; 
                 receivedMessage.channel.awaitMessages(filter, { time: 20000, max: 1, errors: ['time'] })
                     .then(messages => {
                         var da_content = String(messages.first().content); 
