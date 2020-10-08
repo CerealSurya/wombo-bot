@@ -108,12 +108,12 @@ export async function voteblacklist(args, receivedMessage){
                         };
                         if (da_content == '?no'){
                             counter = 1;
-                            return receivedMessage.channel.send(`one person has declined. ${member.user.username} you are safe for now.\n(the vote needs to be unanimous)`);
+                            return receivedMessage.channel.send(`one person has declined. **${member.user.username}** you are safe for now.\n(the vote needs to be unanimous)`);
                         }
                     }) 
                     .catch((err) => {
                         console.log(err);
-                        receivedMessage.channel.send('You did not enter any input!');
+                        receivedMessage.channel.send(`Vote has failed **${member.user.username}** is safe for now `);
                     });
                 
 
