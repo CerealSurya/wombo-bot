@@ -8,6 +8,7 @@ export function staff_help(receivedMessage){
     .setTitle('Staff Commands')
     .addField('\u200b', '`?ignore`\nignores whoever you mention, basically it means that I will ignore their commands to me (only one person at a time)')
     .addField('\u200b', '`?unignore`\nit unignores whoever you mention (only one person at a time)')
+    .addField('\u200b', '`?voteignore`\nto start a vote to get me to start ignoring whoever you mention. (one person at a time)')
     .setThumbnail('https://i.ibb.co/dDxyxXf/staff.png')
     .setColor(0x99ccff)
     receivedMessage.author.send(embed);

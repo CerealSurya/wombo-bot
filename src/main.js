@@ -2,7 +2,7 @@ import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentid
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
 import { setnick  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
-import { blacklistcommand, roleName } from './commands/staff/staff_limiter.js';
+import { blacklistcommand, roleName, voteblacklist } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
 
@@ -166,10 +166,13 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         complimentidea(args, receivedMessage);
      }
     else if(primaryCommand == "blacklist" || primaryCommand == "ignore"){
-        blacklistcommand(args, receivedMessage, 'blacklist');
+        blacklistcommand(args, receivedMessage, 'blacklist', 'no');
      }
     else if(primaryCommand == "unblacklist" || primaryCommand == "unignore"){
-        blacklistcommand(args, receivedMessage, 'unblacklist');
+        blacklistcommand(args, receivedMessage, 'unblacklist', 'no');
+     }
+    else if(primaryCommand == "voteblacklist" || primaryCommand == "voteignore" || primaryCommand == "blacklistvote" || primaryCommand == "ignorevote"){
+        voteblacklist(args, receivedMessage);
      }
     else if(primaryCommand == "introduce"){
         const anotherembed = new Discord.MessageEmbed()

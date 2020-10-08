@@ -9,14 +9,27 @@ function resolve(x) {
 
 var counter = 0;
 const roleName = '_wombo-ignore_';
-export async function blacklistcommand(args, receivedMessage, command){
+var check_sum = false;
+export async function blacklistcommand(args, receivedMessage, command, vote){
     if (args.length > 0){
-        let user = receivedMessage.author;
-        let member = receivedMessage.guild.member(user);
-        if (member.hasPermission('MANAGE_ROLES')) {
+        if (vote == 'no'){
+            let user = receivedMessage.author;
+            var member = receivedMessage.guild.member(user);
+        }
+        else{
+            check_sum = true;
+            var member = vote;
+        }
+
+        if (member.hasPermission('MANAGE_ROLES') || check_sum ) {
             console.log('This member can do the command');
             try{
-                const member = receivedMessage.mentions.members.first();  
+                if (vote == 'no'){
+                    var member = receivedMessage.mentions.members.first();  
+                }
+                else {
+                    var member = vote
+                }
                 let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
 
                 if (member.roles.cache.find(r => r.name === roleName) != undefined && command == 'blacklist' ){
@@ -71,5 +84,47 @@ export async function blacklistcommand(args, receivedMessage, command){
     };
 };
 export {roleName};
+
+export async function voteblacklist(args, receivedMessage){
+    if (args.length > 0){
+        const member = receivedMessage.mentions.members.first();
+        let counter = 1;
+        let message_counter = false;
+        function private_listen(args, receivedMessage){
+            receivedMessage.channel.send(`ignore vote ${member.user.username} ${counter}/5\n(type ?yes to vote yes | type ?no to vote no) `).then(() => {
+                const filter = m => receivedMessage.author.id === m.author.id; //!Make sure you change this to unequal before launch
+                receivedMessage.channel.awaitMessages(filter, { time: 20000, max: 1, errors: ['time'] })
+                    .then(messages => {
+                        var da_content = String(messages.first().content); 
+                        console.log(da_content);
+                        if (da_content == '?yes'){
+                            counter++;
+                            if (counter >= 5){
+                                return blacklistcommand(args, receivedMessage, 'blacklist', member);
+                            }
+                            else{
+                                private_listen(args, receivedMessage);
+                            };
+                        };
+                        if (da_content == '?no'){
+                            counter = 1;
+                            return receivedMessage.channel.send(`one person has declined. ${member.user.username} you are safe for now.\n(the vote needs to be unanimous)`);
+                        }
+                    }) 
+                    .catch((err) => {
+                        console.log(err);
+                        receivedMessage.channel.send('You did not enter any input!');
+                    });
+                
+
+            });
+        }
+        private_listen(args, receivedMessage);
+
+    }
+    else{
+        receivedMessage.channel.send('Aye bro you gotta mention someone like `?voteignore @someone`')
+    }
+}
 
 //TODO: ALso add a vote to blacklist someone command
