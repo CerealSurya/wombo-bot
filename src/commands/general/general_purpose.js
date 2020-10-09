@@ -88,3 +88,29 @@ export function ttsroastcommand(args, receivedMessage) {
     };
 };
 
+export function coinflip(args, receivedMessage){
+    var z = Math.floor(Math.random() * 10000000000);
+    var x = Math.floor(Math.random() * 1000);
+    console.log(x);
+    z = z % 2; 
+    console.log(z);
+
+    if (z == 0){
+        if(x < 200){
+            receivedMessage.channel.send("Heads");
+        }
+        else if(x > 200 && x < 1000){
+            receivedMessage.channel.send("Tails");
+        };
+    }
+    else if(z == 1){
+        if(x < 700){
+            receivedMessage.channel.send("Heads");
+        }
+        else if(x > 700 && x < 1000){
+            receivedMessage.channel.send("Tails");
+        };
+    }
+
+}
+

@@ -1,4 +1,4 @@
-import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments } from './commands/general/general_purpose.js';
+import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments, coinflip } from './commands/general/general_purpose.js';
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
 import { setnick  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
@@ -147,14 +147,8 @@ function commands(primaryCommand, args, receivedMessage, sentence){
      }
     else if(primaryCommand == "ttscompliment"){
         ttscomplimentcommand(args, receivedMessage)
-    }else if(primaryCommand == "coinflip"){
-        var x = Math.floor(Math.random() * 2)
-        if(x==0){
-            receivedMessage.channel.send("Heads");
-        }
-        else if(x==1){
-            receivedMessage.channel.send("Tails");
-        };
+    }else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
+       coinflip(args, receivedMessage);
     }
     else if(primaryCommand == "setnick"){
          return
