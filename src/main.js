@@ -1,10 +1,12 @@
+
 import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments, coinflip } from './commands/general/general_purpose.js';
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
 import { setnick  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
-import { blacklistcommand, roleName, voteblacklist } from './commands/staff/staff_limiter.js';
+import { blacklistcommand, roleName, voteblacklist, rolewhite } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
+
 
 //Getting right imports, aswell as commands in other scripts
 
@@ -37,28 +39,6 @@ client.on('message', (receivedMessage) => {
 
 
 async function processCommand(receivedMessage) {
-    var commandlist = "``` ?roast - To roast someone"  //List of all working comands
-    "\n ?ttsroast - to roast someone in tts", 
-    "\n ?compliment - to make up for all the mean things you were saying", 
-    "\n ?ttscompliment - to compliment someone in tts",
-    "\n ?coinflip - to flip a coin", 
-    "\n ?vcroast - joins the vc and flames up whoever you want", 
-    "\n ?vccompliment - join the vc and compliments whoever you want",
-    "\n ?disconnect - to disc from a vc", 
-    "\n ?join - to join a vc",
-    "\n ?request - use this to request things that you want added to the bot. Like some more roasts or a new feature.",
-    // "\n ?setnick - if you have Manage nickname perms then you can use this command to change someone in the servers nick name",
-    "\n ?roastidea - DMs you a roast idea so you can flame your friends",
-    "\n ?complimentidea - DMs you a compliment idea so you can make up for the mean things you said",
-    "\n ?earrape - If you want to be hella annoying send this command while u in a vc and earrape everyone in it",
-    "\n ?ignore - If you want to stop someone to not be able to use me entirely then use this command",
-    "\n ?unignore - If you want to allow someone that you previously ignored to use Wombo again";
-
-    var general_command = []
-
-    var voicechat_command = []
-
-    var misc_command = []
 
     //TODO: Set up an intro message, wnenever it joins a server it says hi
     let fullCommand = receivedMessage.content.substr(1); // Remove the leading exclamation mark
@@ -69,11 +49,12 @@ async function processCommand(receivedMessage) {
     let user = receivedMessage.author;
     let member = receivedMessage.guild.member(user);
     let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
+    let whiterole = receivedMessage.guild.roles.cache.find(x => x.name === rolewhite); 
 
     console.log("Command received: " + primaryCommand);
     console.log("args: " + args); // There may not be any args
 
-    if (typeof role === 'object'){
+    if(typeof role === 'object'){
         if( !receivedMessage.member.roles.cache.some(x => x.name === roleName) ){
             commands(primaryCommand,args, receivedMessage, sentence );
         }
@@ -87,8 +68,6 @@ async function processCommand(receivedMessage) {
        
    
 }
-
-
 
 function commands(primaryCommand, args, receivedMessage, sentence){
     if (primaryCommand == "roast") { //Runnning said commands 
@@ -113,9 +92,12 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     else if(primaryCommand == "help" && receivedMessage.content.substr(6) == ''){
         const embed = new Discord.MessageEmbed()
         .setTitle('Help')
+        .addField('\u200b', '\u200b')
         .addField('`?help general`', 'any general commands', true)
         .addField('`?help staff`', 'any staff\ncommands', true)
         .addField('`?help voice`', 'any voicechat commands', true)
+        .addField('\u200b', '\u200b')
+        .addField('Quick links', '[Support server](https://discord.com/invite/VZp2tFD)\n[Commands Coming Soon](https://github.com/CerealSurya/Wombo-Bot/blob/master/README.md#coming-soon)\n[Invite link](https://discordbotlist.com/bots/wombo)')
         .setThumbnail(client.user.avatarURL())
         .setColor(0x99ccff)
         receivedMessage.author.send(embed);
@@ -172,8 +154,9 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         const anotherembed = new Discord.MessageEmbed()
         .setTitle('Hello')
         .addField('Hi, I am Wombo bot', 'I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️')
-        .addField('\u200b', '\u200b')
-        .addField('type ?help ', 'if you want a list of commands')
+        .addField('\u200b', 'type ?help\nif you want a list of commands')
+        .addField('\u200b', '**Quick links**\n[Support server](https://discord.com/invite/VZp2tFD)\n[Commands Coming Soon](https://github.com/CerealSurya/Wombo-Bot/blob/master/README.md#coming-soon)', true)
+        .addField('\u200b', '\n[Invite link](https://discordbotlist.com/bots/wombo)', true)
         .setThumbnail(client.user.avatarURL())
         .setColor(0x99ccff)
         receivedMessage.channel.send(anotherembed);

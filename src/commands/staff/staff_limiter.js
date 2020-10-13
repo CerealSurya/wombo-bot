@@ -1,4 +1,5 @@
 
+
 function resolve(x) { 
     return new Promise(resolve => {
       setTimeout(() => {
@@ -9,6 +10,7 @@ function resolve(x) {
 
 var counter = 0;
 const roleName = '_wombo-ignore_';
+const rolewhite = '_wombo-allow_';
 var check_sum = false;
 export async function blacklistcommand(args, receivedMessage, command, vote){
     if (args.length > 0){
@@ -33,10 +35,10 @@ export async function blacklistcommand(args, receivedMessage, command, vote){
                 let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
 
                 if (member.roles.cache.find(r => r.name === roleName) != undefined && command == 'blacklist' ){
-                    return receivedMessage.channel.send(`I am already ignoring ${member}`); 
+                    return receivedMessage.channel.send(`I am already ignoring **${member.user.username}**`); 
                 }
                 else if(member.roles.cache.find(r => r.name === roleName) == undefined && command == 'unblacklist' ){
-                    return receivedMessage.channel.send(`I have already stopped ignoring ${member}`);
+                    return receivedMessage.channel.send(`I have already stopped ignoring**${member.user.username}**`);
                 }
                 if (typeof role === 'undefined') {
                     if (command === 'blacklist'){ 
@@ -63,10 +65,10 @@ export async function blacklistcommand(args, receivedMessage, command, vote){
                     }
                 }
                 if (command === 'blacklist'){
-                    receivedMessage.channel.send(`Noted from now on I will ignore ${member}'s commands`);
+                    receivedMessage.channel.send(`Noted from now on I will ignore **${member.user.username}**'s commands`);
                 }
                 else if(command === 'unblacklist' && counter == 0){
-                    receivedMessage.channel.send(`Aight fine, I'll listen to ${member}'s commands from now on.`);
+                    receivedMessage.channel.send(`Aight fine, I'll listen to **${member.user.username}**'s commands from now on.`);
                 };
             }
             catch(err){
@@ -84,6 +86,7 @@ export async function blacklistcommand(args, receivedMessage, command, vote){
     };
 };
 export {roleName};
+export {rolewhite};
 
 export async function voteblacklist(args, receivedMessage){
     if (args.length > 0){
@@ -115,8 +118,6 @@ export async function voteblacklist(args, receivedMessage){
                         console.log(err);
                         receivedMessage.channel.send(`Vote has failed **${member.user.username}** is safe for now `);
                     });
-                
-
             });
         }
         private_listen(args, receivedMessage);
@@ -127,4 +128,3 @@ export async function voteblacklist(args, receivedMessage){
     }
 }
 
-//TODO: ALso add a vote to blacklist someone command

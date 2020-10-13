@@ -31,8 +31,6 @@ const numberofcompliments = compliments.length +1;
 
 
 
-
-
 export function roastcommand(args, receivedMessage) {
     if (args.length > 0) {
         var randnumber = (Math.floor(Math.random() * numberofroasts));
@@ -96,10 +94,10 @@ export function coinflip(args, receivedMessage){
     console.log(z);
 
     if (z == 0){
-        if(x < 200){
+        if(x < 300){
             receivedMessage.channel.send("Heads");
         }
-        else if(x > 200 && x < 1000){
+        else if(x > 300 && x < 1000){
             receivedMessage.channel.send("Tails");
         };
     }
