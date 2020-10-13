@@ -59,7 +59,7 @@ async function processCommand(receivedMessage) {
             commands(primaryCommand,args, receivedMessage, sentence );
         }
         else{
-            receivedMessage.channel.send('no');
+            return
         };
     } 
     else{
