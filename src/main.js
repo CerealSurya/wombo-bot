@@ -74,8 +74,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         roastcommand(args, receivedMessage);
 
     } else if (primaryCommand == "ttsroast"){
-        ttsroastcommand(args, receivedMessage);
-
+        return;
     } else if(primaryCommand == "vcroast"){
         vcroastcommand(args ,receivedMessage, roasts);
 
@@ -128,7 +127,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         disconnectcommand(args, receivedMessage);
      }
     else if(primaryCommand == "ttscompliment"){
-        ttscomplimentcommand(args, receivedMessage)
+        return
     }else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
        coinflip(args, receivedMessage);
     }

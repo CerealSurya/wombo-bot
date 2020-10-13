@@ -21,9 +21,7 @@ export function general_help(receivedMessage){
     const embed = new Discord.MessageEmbed()
     .setTitle('General Commands')
     .addField('\u200b','`?roast`\nTo get Wombo bot to roast someone\n ')
-    .addField('\u200b', '`?ttsroast`\nTo roast someone in tts (beware tho, this is really annoying and could get you in trouble. Use wisely)')   
     .addField('\u200b', '`?compliment`\nTo get Wombo bot to compliment someone')    
-    .addField('\u200b', '`?ttscompliment`\nTo compliment someone in tts (beware tho, this is really annoying and could get you in trouble. Use wisely)')    
     .addField('\u200b', '`?coinflip`\nflip a coin')   
     .addField('\u200b', '`?request`\nIf you want a specific feature or new roast added to Wombo bot')
     .addField('\u200b', '`?roastidea`\nuse this command to get a free insult to use')
@@ -42,6 +40,8 @@ export function voice_help(receivedMessage){
     .addField('\u200b', '`?vcroast`\nTo get Wombo bot to roast someone in your voicechat')
     .addField('\u200b', '`?vccompliment`\nTo get Wombo bot to compliment someone in your voicechat')
     .addField('\u200b', '`?earrape`\nWombo bot joins your voicechat and plays really loud music (use wisely, this is a very annoying command) ')
+    .addField('\u200b', '\u200b')
+    .addField('note', "the voicechat commands don't work rn")
     .setThumbnail('https://i.ibb.co/1ZngJtB/voice.png')
     .setColor(0x99ccff)
     receivedMessage.author.send(embed);
