@@ -6,6 +6,7 @@ A discord bot that does some little things. It can roast, and compliment people 
 ![](misc/wombo_ss_0.png)
 ## Bot Invite Links
 - [Discord Bot List](https://discordbotlist.com/bots/wombo)
+- [Top.gg](https://top.gg/bot/707001510231277669)
 
 ## Wombo's official server link
 - [Wombo's Wallet](https://discord.gg/VZp2tFD)
