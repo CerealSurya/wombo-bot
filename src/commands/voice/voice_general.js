@@ -34,7 +34,7 @@ export function earrapecommand(argument, receivedMessage){
             receivedMessage.member.voice.channel.join()
                 .then(connection =>{
                     receivedMessage.channel.send("Better deafen urself cuz ||shit|| getting real")
-                    const stream = ytdl('https://www.youtube.com/watch?v=OwTToclvHLg', { filter: 'audioonly' });
+                    const stream = ytdl('https://www.youtube.com/watch?v=OwTToclvHLg&ab_channel=peepo', { filter: 'audioonly' });
                     const dispatcher = connection.play(stream);
 
                     dispatcher.on('end', () => receivedMessage.member.voice.channel.leave());
