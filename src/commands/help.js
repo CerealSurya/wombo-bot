@@ -41,7 +41,7 @@ export function voice_help(receivedMessage){
     .addField('\u200b', '`?leave`\nTo get Wombo bot to disconnect from the voicechat you are in')
     .addField('\u200b', '`?vcroast`\nTo get Wombo bot to roast someone in your voicechat')
     .addField('\u200b', '`?vccompliment`\nTo get Wombo bot to compliment someone in your voicechat')
-    .addField('\u200b', '`?earrape`\nWombo bot joins your voicechat and plays really loud music (use wisely, this is a very annoying command) ')
+    // .addField('\u200b', '`?earrape`\nWombo bot joins your voicechat and plays really loud music (use wisely, this is a very annoying command) ')
     .addField('\u200b', '\u200b')
     .setThumbnail('https://i.ibb.co/1ZngJtB/voice.png')
     .setColor(0x99ccff)

@@ -161,7 +161,8 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         receivedMessage.channel.send(anotherembed);
     }
     else if(primaryCommand == "earrape"){
-        earrapecommand(args, receivedMessage);
+        return;
+        // earrapecommand(args, receivedMessage);
      }
 }
 client.login(bot_secret_token);
