@@ -1,6 +1,6 @@
 
 
-function resolve(x) { 
+export function resolve(x) { 
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(x);

@@ -1,16 +1,13 @@
 
 import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments, coinflip } from './commands/general/general_purpose.js';
 import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
-import { setnick  } from './commands/staff/staff_general.js'; 
+import { setnick, setrole, createrole  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
 import { blacklistcommand, roleName, voteblacklist, rolewhite } from './commands/staff/staff_limiter.js';
 import config from './config.js';
 import Discord from 'discord.js';
 
 
-//Getting right imports, aswell as commands in other scripts
-
-//TODO: SO um I cannot illegally get this discord opus in my package files so vc no work. 
 
 const client = new Discord.Client()
 client.on('ready', () => {
@@ -132,8 +129,11 @@ function commands(primaryCommand, args, receivedMessage, sentence){
        coinflip(args, receivedMessage);
     }
     else if(primaryCommand == "setnick"){
-         return
-        // setnick(args, receivedMessage);
+        setnick(args, receivedMessage);
+    }else if(primaryCommand == "setrole"){
+        setrole(args, receivedMessage);
+    }else if(primaryCommand == "createrole"){
+        createrole(args, receivedMessage, false, false);
     }else if(primaryCommand == "roastidea"){
         roastidea(args, receivedMessage);
     }

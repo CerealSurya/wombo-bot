@@ -9,6 +9,7 @@ export function staff_help(receivedMessage){
     .addField('\u200b', '`?ignore`\nignores whoever you mention, basically it means that I will ignore their commands to me (only one person at a time)')
     .addField('\u200b', '`?unignore`\nit unignores whoever you mention (only one person at a time)')
     .addField('\u200b', '`?voteignore`\nto start a vote to get me to start ignoring whoever you mention. (one person at a time)')
+    .addField('\u200b', '`?setnick`\ncan be used to set the nickname of someone in the server whose role is below the bot')
     .setThumbnail('https://i.ibb.co/dDxyxXf/staff.png')
     .setColor(0x99ccff)
     receivedMessage.author.send(embed);
@@ -26,6 +27,7 @@ export function general_help(receivedMessage){
     .addField('\u200b', '`?request`\nIf you want a specific feature or new roast added to Wombo bot')
     .addField('\u200b', '`?roastidea`\nuse this command to get a free insult to use')
     .addField('\u200b', '`?complimentidea`use this command to get a free compliment to use')
+    .addField('\u200b', '`?setnick`\ncan also be used to set or reset your own nickname (Your role needs to be below mine however)')
     .setThumbnail('https://i.ibb.co/D4m9fPg/general.png')
     .setColor(0x99ccff)
     receivedMessage.author.send(embed);
@@ -41,7 +43,6 @@ export function voice_help(receivedMessage){
     .addField('\u200b', '`?vccompliment`\nTo get Wombo bot to compliment someone in your voicechat')
     .addField('\u200b', '`?earrape`\nWombo bot joins your voicechat and plays really loud music (use wisely, this is a very annoying command) ')
     .addField('\u200b', '\u200b')
-    .addField('note', "the voicechat commands don't work rn")
     .setThumbnail('https://i.ibb.co/1ZngJtB/voice.png')
     .setColor(0x99ccff)
     receivedMessage.author.send(embed);

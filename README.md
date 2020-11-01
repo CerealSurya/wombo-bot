@@ -9,7 +9,11 @@ A discord bot that does some little things. It can roast, and compliment people 
 - [Top.gg](https://top.gg/bot/707001510231277669)
 
 ## Wombo's official server link
-- [Wombo's Wallet](https://discord.gg/VZp2tFD)
+- [Wombo Support Server](https://discord.gg/VZp2tFD)
+
+## Recently added features
+- Setnick command to set the nickname of another server member or yourself
+- Set role/ Create role command to add a role to someone and or create a role
 
 ## Installation
 If you want to setup Wombo-Bot for youself here it is
