@@ -14,13 +14,16 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/node-pre-gyp": "^0.1.0",
+    "@discordjs/opus": "^0.3.3",
     "discord-tts": "^1.0.1",
     "discord.js": "^12.3.1",
     "discord.js-commando": "^0.10.0",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
-    "node-gyp": "^7.1.0",
+    "node-gyp": "^7.1.2",
+    "node-opus": "^0.3.3",
     "node-pre-gyp": "^0.15.0",
+    "opusscript": "0.0.7",
     "rebuild": "^0.1.2",
     "ytdl-core": "^3.2.2"
   }
