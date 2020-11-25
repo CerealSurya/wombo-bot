@@ -1,10 +1,13 @@
 
 import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments, coinflip } from './commands/general/general_purpose.js';
-import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
+import { vcroastcommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
 import { setnick, setrole, createrole  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
 import { blacklistcommand, roleName, voteblacklist, rolewhite } from './commands/staff/staff_limiter.js';
 import Discord from 'discord.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url); //Getting require working with ESM modules
+require('dotenv').config()
 
 
 
@@ -123,7 +126,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         disconnectcommand(args, receivedMessage);
      }
     else if(primaryCommand == "ttscompliment"){
-        return
+        ttscomplimentcommand(args, receivedMessage)
     }else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
        coinflip(args, receivedMessage);
     }
@@ -159,9 +162,6 @@ function commands(primaryCommand, args, receivedMessage, sentence){
         .setColor(0x99ccff)
         receivedMessage.channel.send(anotherembed);
     }
-    else if(primaryCommand == "earrape"){
-        earrapecommand(args, receivedMessage);
-     }
     else if(primaryCommand == "servercount"){
         receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
     }
