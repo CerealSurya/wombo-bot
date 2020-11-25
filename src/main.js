@@ -4,7 +4,6 @@ import { vcroastcommand, earrapecommand, disconnectcommand, joincommand } from '
 import { setnick, setrole, createrole  } from './commands/staff/staff_general.js'; 
 import { general_help, staff_help, voice_help } from './commands/help.js';
 import { blacklistcommand, roleName, voteblacklist, rolewhite } from './commands/staff/staff_limiter.js';
-import config from './config.js';
 import Discord from 'discord.js';
 
 
@@ -21,8 +20,8 @@ client.on('ready', () => {
 // Get your bot's secret token from:
 // https://discordapp.com/developers/applications/
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
-const bot_secret_token = config.token
-const prefix = config.prefix
+const bot_secret_token = process.env.TOKEN;
+const prefix = process.env.PREFIX;
 
 client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) { // Prevent bot from responding to its own messages
@@ -152,7 +151,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     else if(primaryCommand == "introduce"){
         const anotherembed = new Discord.MessageEmbed()
         .setTitle('Hello')
-        .addField('Hi, I am Wombo bot', 'I have a handful of commands that you can use. Whenever I am turned on that is 👁️👄👁️')
+        .addField('Hi, I am Wombo bot', 'I have a handful of commands that you can use.')
         .addField('\u200b', 'type ?help\nif you want a list of commands')
         .addField('\u200b', '**Quick links**\n[Support server](https://discord.com/invite/VZp2tFD)\n[Commands Coming Soon](https://github.com/CerealSurya/Wombo-Bot/blob/master/README.md#coming-soon)', true)
         .addField('\u200b', '\n[Invite link](https://discordbotlist.com/bots/wombo)', true)
@@ -163,6 +162,9 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     else if(primaryCommand == "earrape"){
         earrapecommand(args, receivedMessage);
      }
+    else if(primaryCommand == "servercount"){
+        receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
+    }
 }
 client.login(bot_secret_token);
 

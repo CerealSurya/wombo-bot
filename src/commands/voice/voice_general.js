@@ -33,9 +33,10 @@ export function earrapecommand(argument, receivedMessage){
         if(!receivedMessage.guild.voiceConnection){
             receivedMessage.member.voice.channel.join()
                 .then(connection =>{
+                    const streamOptions = { seek: 0, volume: 1 }
                     receivedMessage.channel.send("Better deafen urself cuz ||shit|| getting real")
-                    const stream = ytdl('https://www.youtube.com/watch?v=OwTToclvHLg', { filter: 'audioonly' });
-                    const dispatcher = connection.play(stream);
+                    const stream = ytdl('https://www.youtube.com/watch?v=qvUWA45GOMg&ab_channel=GEMNChillOut%26LofiMusic', { filter: 'audioonly' });
+                    const dispatcher = connection.play(stream, streamOptions);
 
                     dispatcher.on('end', () => receivedMessage.member.voice.channel.leave());
                 })
@@ -75,3 +76,6 @@ export function joincommand(args, receivedMessage){
         receivedMessage.reply("You gotta be in a voice channel for me to connect. ");
     };
 };
+
+//npm install --save ytdl-core
+//npm install npm i ytdl-core-discord
