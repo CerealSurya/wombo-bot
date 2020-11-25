@@ -36,11 +36,11 @@ export function general_help(receivedMessage){
 
 export function voice_help(receivedMessage){
     const embed = new Discord.MessageEmbed()
-    .setTitle('Voicechat Commands')
-    .addField('\u200b', '`?join`\nTo get Wombo bot to join the voicechat you are in')
-    .addField('\u200b', '`?leave`\nTo get Wombo bot to disconnect from the voicechat you are in')
-    .addField('\u200b', '`?vcroast`\nTo get Wombo bot to roast someone in your voicechat')
-    .addField('\u200b', '`?vccompliment`\nTo get Wombo bot to compliment someone in your voicechat')
+    .setTitle('Voicechat Commands are coming soon!')
+    // .addField('\u200b', '`?join`\nTo get Wombo bot to join the voicechat you are in')
+    // .addField('\u200b', '`?leave`\nTo get Wombo bot to disconnect from the voicechat you are in')
+    // .addField('\u200b', '`?vcroast`\nTo get Wombo bot to roast someone in your voicechat')
+    // .addField('\u200b', '`?vccompliment`\nTo get Wombo bot to compliment someone in your voicechat')
     // .addField('\u200b', '`?earrape`\nWombo bot joins your voicechat and plays really loud music (use wisely, this is a very annoying command) ')
     .addField('\u200b', '\u200b')
     .setThumbnail('https://i.ibb.co/1ZngJtB/voice.png')

@@ -75,11 +75,11 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     } else if (primaryCommand == "ttsroast"){
         return;
     } else if(primaryCommand == "vcroast"){
-        vcroastcommand(args ,receivedMessage, roasts);
-
+        return
+        //vcroastcommand(args ,receivedMessage, roasts);
     } else if(primaryCommand == "vccompliment"){
-
-        vcroastcommand(args, receivedMessage, compliments)
+        return
+        //vcroastcommand(args, receivedMessage, compliments)
     }  else if(primaryCommand == "compliment"){
 
         compliment(args, receivedMessage);

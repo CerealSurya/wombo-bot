@@ -1,7 +1,7 @@
 
 import ytdl from 'ytdl-core';
-import discordTTS from 'discord-tts';
-
+import googleTTS from 'google-tts-api'
+import discordTTS from 'discord-tts'
    
 export function vcroastcommand(args ,receivedMessage, usecase){
     if(receivedMessage.member.voice.channel){
@@ -9,18 +9,16 @@ export function vcroastcommand(args ,receivedMessage, usecase){
             receivedMessage.member.voice.channel.join()
             .then(connection =>{
                 receivedMessage.channel.send("Aight lets do this");
-                const mention = receivedMessage.mentions.users.first();
-                const username = mention.username;
-                
-                const stream = discordTTS.getVoiceStream(username +usecase[(Math.floor(Math.random() * usecase.length))]);
-                const dispatcher = connection.play(stream);
-                dispatcher.on("end", end => {receivedMessage.member.voice.channel.leave()});
-                const stream = ytdl('https://www.youtube.com/watch?v=qvUWA45GOMg&ab_channel=GEMNChillOut%26LofiMusic', { filter: 'audioonly' });
-                const dispatcher = connection.play(stream);
 
-                dispatcher.on('end', () => receivedMessage.member.voice.channel.leave());
-            })
-            .catch(console.error);
+                    const mention = receivedMessage.mentions.users.first();
+                    const username = mention.username;
+                    
+                    const stream = discordTTS.getVoiceStream(username +usecase[(Math.floor(Math.random() * usecase.length))]);
+                    const dispatcher = connection.play(stream);
+                    dispatcher.on("end", end => {receivedMessage.member.voice.channel.leave()});
+                })
+                .catch(console.error);
+        
         }
         else{
             receivedMessage.reply('```You need to @ someone, or type their username```')
