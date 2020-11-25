@@ -25,6 +25,7 @@
     "node-pre-gyp": "^0.15.0",
     "opusscript": "0.0.7",
     "rebuild": "^0.1.2",
-    "ytdl-core": "^3.2.2"
+    "ytdl-core": "^3.4.2",
+    "ytdl-core-discord": "^1.2.4"
   }
 }
