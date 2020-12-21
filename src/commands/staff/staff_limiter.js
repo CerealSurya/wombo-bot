@@ -1,6 +1,6 @@
 
 
-export function resolve(x) { 
+function resolve(x) { 
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(x);
@@ -12,7 +12,7 @@ var counter = 0;
 const roleName = '_wombo-ignore_';
 const rolewhite = '_wombo-allow_';
 var check_sum = false;
-export async function blacklistcommand(args, receivedMessage, command, vote){
+async function blacklistcommand(args, receivedMessage, command, vote){
     if (args.length > 0){
         if (vote == 'no'){
             let user = receivedMessage.author;
@@ -85,10 +85,9 @@ export async function blacklistcommand(args, receivedMessage, command, vote){
         // .then(message => message.delete({timeout: 5000})); 
     };
 };
-export {roleName};
-export {rolewhite};
 
-export async function voteblacklist(args, receivedMessage){
+
+function voteblacklist(args, receivedMessage){
     if (args.length > 0){
         const member = receivedMessage.mentions.members.first();
         let counter = 1;
@@ -128,3 +127,4 @@ export async function voteblacklist(args, receivedMessage){
     }
 }
 
+module.exports = { resolve, blacklistcommand, roleName, rolewhite, voteblacklist }

@@ -1,6 +1,6 @@
-import {resolve} from './staff_limiter.js'
+const {resolve} = require('./staff_limiter.js');
 
-export function setnick(args, receivedMessage){ 
+function setnick(args, receivedMessage){ 
     try{
         const prefixremove = String(receivedMessage.content.substring(9));
         var member = receivedMessage.mentions.members.first();
@@ -20,7 +20,7 @@ export function setnick(args, receivedMessage){
         console.log(err);
     };
 };
-export async function createrole(args, receivedMessage, inside, name){
+async function createrole(args, receivedMessage, inside, name){
     if(args.length > 0 || inside != false){// checking if the user called this function or if I did inside the code
         try{
             if(inside == false && name == false){ //The user called this function
@@ -49,7 +49,7 @@ export async function createrole(args, receivedMessage, inside, name){
     }
 }
 
-export function setrole(args, receivedMessage){
+function setrole(args, receivedMessage){
     if(args.length > 0){
 
         const member = receivedMessage.mentions.members.first();
@@ -94,3 +94,5 @@ export function setrole(args, receivedMessage){
         receivedMessage.channel.send('Your message should be formatted like this `?setrole @someone -insert role to give-`')
     }
 }
+
+module.exports = { setnick, createrole, setrole }

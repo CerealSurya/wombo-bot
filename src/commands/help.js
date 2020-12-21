@@ -1,8 +1,8 @@
 
-import Discord from 'discord.js';
+const Discord = require('discord.js');
 
 
-export function staff_help(receivedMessage){
+function staff_help(receivedMessage){
 
     const embed = new Discord.MessageEmbed()
     .setTitle('Staff Commands')
@@ -12,13 +12,11 @@ export function staff_help(receivedMessage){
     .addField('\u200b', '`?setnick`\ncan be used to set the nickname of someone in the server whose role is below the bot')
     .setThumbnail('https://i.ibb.co/dDxyxXf/staff.png')
     .setColor(0x99ccff)
-    receivedMessage.author.send(embed);
-    receivedMessage.reply("Just DM'd the commands");
-
+    receivedMessage.channel.send(embed);
 }
 
 
-export function general_help(receivedMessage){
+function general_help(receivedMessage){
     const embed = new Discord.MessageEmbed()
     .setTitle('General Commands')
     .addField('\u200b','`?roast`\nTo get Wombo bot to roast someone\n ')
@@ -30,11 +28,10 @@ export function general_help(receivedMessage){
     .addField('\u200b', '`?setnick`\ncan also be used to set or reset your own nickname (Your role needs to be below mine however)')
     .setThumbnail('https://i.ibb.co/D4m9fPg/general.png')
     .setColor(0x99ccff)
-    receivedMessage.author.send(embed);
-    receivedMessage.reply("Just DM'd the commands");
+    receivedMessage.channel.send(embed);
 }
 
-export function voice_help(receivedMessage){
+function voice_help(receivedMessage){
     const embed = new Discord.MessageEmbed()
     .setTitle('Voicechat Commands are coming soon!')
     // .addField('\u200b', '`?join`\nTo get Wombo bot to join the voicechat you are in')
@@ -45,6 +42,7 @@ export function voice_help(receivedMessage){
     .addField('\u200b', '\u200b')
     .setThumbnail('https://i.ibb.co/1ZngJtB/voice.png')
     .setColor(0x99ccff)
-    receivedMessage.author.send(embed);
-    receivedMessage.reply("Just DM'd the commands");
+    receivedMessage.channel.send(embed);
 }
+
+module.exports = { staff_help, general_help, voice_help }

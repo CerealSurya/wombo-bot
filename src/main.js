@@ -1,23 +1,23 @@
 
-import { roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, roasts, compliments, coinflip } from './commands/general/general_purpose.js';
-import { vcroastcommand, disconnectcommand, joincommand } from './commands/voice/voice_general.js';
-import { setnick, setrole, createrole  } from './commands/staff/staff_general.js'; 
-import { general_help, staff_help, voice_help } from './commands/help.js';
-import { blacklistcommand, roleName, voteblacklist, rolewhite } from './commands/staff/staff_limiter.js';
-import Discord from 'discord.js';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url); //Getting require working with ESM modules
+const { roasts, compliments, roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, coinflip } = require('./commands/general/general_purpose.js');
+const { vcroastcommand, disconnectcommand, joincommand, test } = require('./commands/voice/voice_general.js');
+const { setnick, setrole, createrole  } = require('./commands/staff/staff_general.js'); 
+const { general_help, staff_help, voice_help } = require('./commands/help.js');
+const { blacklistcommand, roleName, voteblacklist, rolewhite } = require('./commands/staff/staff_limiter.js');
+const { execute_play, skip, stop, play } = require('./commands/voice/voice_music.js');
+const Discord = require('discord.js');
 require('dotenv').config()
-
-
-
 const client = new Discord.Client()
+const queue = new Map();
+const ytdl = require('ytdl-core');
+const { google } = require('googleapis');
+
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
     client.user.setActivity('you type ?help', {type: 'WATCHING'}).catch(console.error);
 
 })
-
+//! I think the error is with the way we define the variables in the import, we need to import them in the same order we exported them, or it could be the way we exported them idk
 
 
 // Get your bot's secret token from:
@@ -25,6 +25,7 @@ client.on('ready', () => {
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
 const bot_secret_token = process.env.TOKEN;
 const prefix = process.env.PREFIX;
+const yt_token = process.env.YOUTUBE_TOKEN;
 
 client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) { // Prevent bot from responding to its own messages
@@ -49,31 +50,30 @@ async function processCommand(receivedMessage) {
     let member = receivedMessage.guild.member(user);
     let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
     let whiterole = receivedMessage.guild.roles.cache.find(x => x.name === rolewhite); 
+    const serverQueue = queue.get(receivedMessage.guild.id);
 
     console.log("Command received: " + primaryCommand);
     console.log("args: " + args); // There may not be any args
 
     if(typeof role === 'object'){
         if( !receivedMessage.member.roles.cache.some(x => x.name === roleName) ){
-            commands(primaryCommand,args, receivedMessage, sentence );
+            commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand );
         }
         else{
             return
         };
     } 
     else{
-        commands(primaryCommand,args, receivedMessage, sentence );
+        commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand );
     };
        
    
 }
 
-function commands(primaryCommand, args, receivedMessage, sentence){
+async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand){
     if (primaryCommand == "roast") { //Runnning said commands 
         roastcommand(args, receivedMessage);
 
-    } else if (primaryCommand == "ttsroast"){
-        return;
     } else if(primaryCommand == "vcroast"){
         return
         //vcroastcommand(args ,receivedMessage, roasts);
@@ -125,9 +125,7 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     else if(primaryCommand == "disconnect" || primaryCommand == "leave"){
         disconnectcommand(args, receivedMessage);
      }
-    else if(primaryCommand == "ttscompliment"){
-        ttscomplimentcommand(args, receivedMessage)
-    }else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
+    else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
        coinflip(args, receivedMessage);
     }
     else if(primaryCommand == "setnick"){
@@ -164,6 +162,43 @@ function commands(primaryCommand, args, receivedMessage, sentence){
     }
     else if(primaryCommand == "servercount"){
         receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
+    }
+    else if(primaryCommand == "play" || primaryCommand == "p") {
+        if (primaryCommand == 'p'){
+            var sentence = String(receivedMessage.content.substr(3));
+        }
+        else if (primaryCommand == 'play'){
+            var sentence = String(receivedMessage.content.substr(6));
+        }
+        
+        if (args.length > 0){
+            i=0
+            await google.youtube('v3').search.list({
+                key: yt_token,
+                part: 'snippet',
+                q: sentence,
+                maxResults: 1
+            }).then((response) =>{
+                console.log(`\n${sentence}\n`)
+                console.dir(response.data.items);
+                var song_title = response.data.items[0].snippet.title;
+                var song_url = 'https://www.youtube.com/watch?v=' + String(response.data.items[0].id.videoId);
+                console.log(song_title, song_url);
+                test(song_url, receivedMessage, song_title) //!We call the function that joins vc and plays music, I just need to update ytdl-core npm install it again.
+            }); //.catch((err) => console.log(err)));
+    
+        }
+        else{
+            return receivedMessage.channel.send('whoops something went wrong'); // this is when something happens
+        }
+       // console.log(song_title, song_url)
+        //execute_play(receivedMessage, serverQueue, args, splitCommand, primaryCommand, yt_token);
+    }
+    else if (primaryCommand == "skip") {
+        skip(receivedMessage, serverQueue);
+    }
+    else if (primaryCommand == "stop") {
+        stop(receivedMessage, serverQueue);
     }
 }
 client.login(bot_secret_token);

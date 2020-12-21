@@ -10,7 +10,6 @@
     "jalapeno, roast, toxic, music"
   ],
   "author": "sjalapati42@gmail.com",
-  "type": "module",
   "license": "MIT",
   "dependencies": {
     "@discordjs/node-pre-gyp": "^0.1.0",

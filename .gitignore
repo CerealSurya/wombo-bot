@@ -4,3 +4,6 @@ node_modules/
 
 #bot token
 .env
+
+#yt client credentials
+/src/client_secret.json

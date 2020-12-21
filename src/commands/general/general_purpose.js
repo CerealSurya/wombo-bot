@@ -1,6 +1,6 @@
 
 
-export const roasts = [" ||You’re the reason God created the middle finger.|| ", "If your brain was dynamite, there wouldn’t be enough to blow your hat off. ", "You are more disappointing than an unsalted pretzel. ",
+const roasts = [" ||You’re the reason God created the middle finger.|| ", "If your brain was dynamite, there wouldn’t be enough to blow your hat off. ", "You are more disappointing than an unsalted pretzel. ",
 " Light travels faster than sound which is why you seemed bright until you spoke. ", "You are so annoying, that your Happy Meal crys hearing you. ", " You have so many gaps in your teeth it looks like your tongue is in jail. ",
 " Your secrets are always safe with me. I never even listen when you tell me them ", " I’ll never forget the first time we met. But I’ll keep trying. ",
 "Mirrors can't talk lucky for you they can't laugh either. ", "You're the reason the gene pool needs a lifeguard. ",
@@ -18,7 +18,7 @@ export const roasts = [" ||You’re the reason God created the middle finger.|| 
 "Beep. Beep. BEEP. BEEP, I am detecting a lot of stupidity coming from your direction.", " ur so fat you make nicado avocado look skinny"
 ]
 
-export const compliments = [" You’re that “Nothing” when people ask me what I’m thinking about. ", "You look great today.", " You’re a smart cookie.", "I bet you make babies smile.", "You have impeccable manners.",
+const compliments = [" You’re that “Nothing” when people ask me what I’m thinking about. ", "You look great today.", " You’re a smart cookie.", "I bet you make babies smile.", "You have impeccable manners.",
 "I like your style.", "You have the best laugh.", "I appreciate you.", "You are the most perfect you there is.", "Our system of inside jokes is so advanced that only you and I get it. And I like that.",
 "You’re strong.", "Your perspective is refreshing.", "You’re an awesome friend.", "You light up the room.", "You deserve a hug right now.", "You should be proud of yourself.",
 "You’re more helpful than you realize.", "You have a great sense of humor.", "You’ve got all the right moves! ", "Is that your picture next to “charming” in the dictionary?",
@@ -31,7 +31,7 @@ const numberofcompliments = compliments.length +1;
 
 
 
-export function roastcommand(args, receivedMessage) {
+function roastcommand(args, receivedMessage) {
     if (args.length > 0) {
         var randnumber = (Math.floor(Math.random() * numberofroasts));
         receivedMessage.channel.send(args + roasts[randnumber]);
@@ -46,7 +46,7 @@ export function roastcommand(args, receivedMessage) {
     }
 };
 
-export function compliment(args,receivedMessage){
+function compliment(args,receivedMessage){
     if (args.length > 0) {
         receivedMessage.channel.send(args + compliments[(Math.floor(Math.random() * numberofcompliments))]);
         console.log((Math.floor(Math.random() * numberofcompliments)));
@@ -55,38 +55,18 @@ export function compliment(args,receivedMessage){
     }
 };
 
-export function ttscomplimentcommand(args, receivedMessage) {
-    if (args.length > 0) {
-        receivedMessage.channel.send(args +"  "+ (compliments[(Math.floor(Math.random() * numberofcompliments))]), {tts: true});
-        console.log((Math.floor(Math.random() * numberofcompliments)));
-    
-    } else {
-        receivedMessage.channel.send("You need to @ someone that you want to roast. Try ` ?ttscompliment [@urfriend]`");
-    };
-};
 
-export function roastidea(args, receivedMessage){
+function roastidea(args, receivedMessage){
     receivedMessage.author.send('Heres one - '+args + roasts[(Math.floor(Math.random() * numberofroasts))]);
     console.log((Math.floor(Math.random() * numberofroasts)));
 };
 
-export function complimentidea(args, receivedMessage){
+function complimentidea(args, receivedMessage){
     receivedMessage.author.send('Heres one - '+args + compliments[(Math.floor(Math.random() * numberofcompliments))]);
     console.log((Math.floor(Math.random() * numberofcompliments)));
 };
 
-export function ttsroastcommand(args, receivedMessage) {
-    if (args.length > 0) {
-        receivedMessage.channel.send(args +"  "+ (roasts[(Math.floor(Math.random() * numberofroasts))]), {tts: true});
-        console.log((Math.floor(Math.random() * numberofroasts)));
-        tts: true;
-    
-    } else {
-        receivedMessage.channel.send("You need to @ someone that you want to roast. Try ` ?ttsroast [@urfriend]`");
-    };
-};
-
-export function coinflip(args, receivedMessage){
+function coinflip(args, receivedMessage){
     var z = Math.floor(Math.random() * 10000000000);
     var x = Math.floor(Math.random() * 1000);
     console.log(x);
@@ -112,3 +92,4 @@ export function coinflip(args, receivedMessage){
 
 }
 
+module.exports = { roasts, compliments, roastcommand, compliment, roastidea, complimentidea, coinflip }
