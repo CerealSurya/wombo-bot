@@ -1,7 +1,5 @@
 
 const ytdl = require('ytdl-core');
-const googleTTS = require('google-tts-api');
-
    
 function vcroastcommand(args ,receivedMessage, usecase){
     if(receivedMessage.member.voice.channel){

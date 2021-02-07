@@ -4,10 +4,11 @@ const { vcroastcommand, disconnectcommand, joincommand, test } = require('./comm
 const { setnick, setrole, createrole  } = require('./commands/staff/staff_general.js'); 
 const { general_help, staff_help, voice_help } = require('./commands/help.js');
 const { blacklistcommand, roleName, voteblacklist, rolewhite } = require('./commands/staff/staff_limiter.js');
-const { execute_play, skip, stop, play } = require('./commands/voice/voice_music.js');
+const { yt_search, skip, queue_func, pause, resume } = require('./commands/voice/voice_music.js');
 const Discord = require('discord.js');
-require('dotenv').config()
 const client = new Discord.Client()
+const dotenv = require('dotenv');
+dotenv.config()
 const queue = new Map();
 const ytdl = require('ytdl-core');
 const { google } = require('googleapis');
@@ -46,31 +47,34 @@ async function processCommand(receivedMessage) {
     let splitCommand = fullCommand.split(" "); // Split the message up in to pieces for each space
     let primaryCommand = splitCommand[0]; // The first word directly after the exclamation is the command
     let args = splitCommand.slice(1); // All other words are args/parameters/options for the command
+    let extra_command = receivedMessage.content.substr(primaryCommand.length + 1).replace(/\s+/g, ' ').trim(); //gets everything after the command (Including possible paramaters)
     let user = receivedMessage.author;
     let member = receivedMessage.guild.member(user);
     let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
     let whiterole = receivedMessage.guild.roles.cache.find(x => x.name === rolewhite); 
+
     const serverQueue = queue.get(receivedMessage.guild.id);
 
     console.log("Command received: " + primaryCommand);
-    console.log("args: " + args); // There may not be any args
+    console.log("args: " + args);
+    console.log("Extra Commands: " + extra_command);
 
     if(typeof role === 'object'){
         if( !receivedMessage.member.roles.cache.some(x => x.name === roleName) ){
-            commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand );
+            commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand, extra_command );
         }
         else{
             return
         };
     } 
     else{
-        commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand );
+        commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand, extra_command );
     };
        
    
 }
 
-async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand){
+async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand, extra_command){
     if (primaryCommand == "roast") { //Runnning said commands 
         roastcommand(args, receivedMessage);
 
@@ -163,43 +167,32 @@ async function commands(primaryCommand, args, receivedMessage, sentence, serverQ
     else if(primaryCommand == "servercount"){
         receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
     }
-    else if(primaryCommand == "play" || primaryCommand == "p") {
-        if (primaryCommand == 'p'){
-            var sentence = String(receivedMessage.content.substr(3));
-        }
-        else if (primaryCommand == 'play'){
-            var sentence = String(receivedMessage.content.substr(6));
-        }
-        
-        if (args.length > 0){
-            i=0
-            await google.youtube('v3').search.list({
-                key: yt_token,
-                part: 'snippet',
-                q: sentence,
-                maxResults: 1
-            }).then((response) =>{
-                console.log(`\n${sentence}\n`)
-                console.dir(response.data.items);
-                var song_title = response.data.items[0].snippet.title;
-                var song_url = 'https://www.youtube.com/watch?v=' + String(response.data.items[0].id.videoId);
-                console.log(song_title, song_url);
-                test(song_url, receivedMessage, song_title) //!We call the function that joins vc and plays music, I just need to update ytdl-core npm install it again.
-            }); //.catch((err) => console.log(err)));
-    
-        }
-        else{
-            return receivedMessage.channel.send('whoops something went wrong'); // this is when something happens
-        }
-       // console.log(song_title, song_url)
-        //execute_play(receivedMessage, serverQueue, args, splitCommand, primaryCommand, yt_token);
+    if(primaryCommand == "play" || primaryCommand == "p") {
+        yt_search(receivedMessage, serverQueue, queue, args, primaryCommand, yt_token)
     }
-    else if (primaryCommand == "skip") {
-        skip(receivedMessage, serverQueue);
+    else if(!client.user.voiceConnection){ //Checking if the bot is in a voicechannel before we play the voice channel commands music
+        if (primaryCommand == "skip") {
+            skip(receivedMessage, serverQueue);
+        }
+        else if (primaryCommand == "queue" || primaryCommand == "que") {
+            queue_func(receivedMessage, serverQueue, {entry:'print_queue'});
+        }
+        else if (primaryCommand == "clear" && extra_command == 'queue') {
+            queue_func(receivedMessage, serverQueue, {entry:'clear_queue'});
+        }
+        else if (primaryCommand == "remove" && extra_command == 'song') {
+            queue_func(receivedMessage, serverQueue, {entry:'print_queue'});
+            queue_func(receivedMessage, serverQueue, {entry:'remove_song'});
+        }
+        else if (primaryCommand == "pause") {
+            pause(receivedMessage, serverQueue);
+        }
+        else if (primaryCommand == "resume") {
+            resume(receivedMessage, serverQueue);
+        }
+
     }
-    else if (primaryCommand == "stop") {
-        stop(receivedMessage, serverQueue);
-    }
+    else{return receivedMessage.channel.send('I am not in a voicechat use `?join` to get me in one.')};
 }
 client.login(bot_secret_token);
 
