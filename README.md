@@ -12,8 +12,7 @@ A discord bot that does some little things. It can roast, and compliment people 
 - [Wombo Support Server](https://discord.gg/VZp2tFD)
 
 ## Recently added features
-- Setnick command to set the nickname of another server member or yourself
-- Set role/ Create role command to add a role to someone and or create a role
+- Added a music command so you can play your favorite music from youtube using Wombo bot.
 
 ## Installation
 If you want to setup Wombo-Bot for youself here it is
@@ -28,9 +27,8 @@ If you want to setup Wombo-Bot for youself here it is
 5. In your bots page in the developer portal you can find your bots invite link
 
 ## Coming Soon
-- Some staff commands so that no one abuses the power of Wombo bot
-- Adding a music command, so the bot is not totally annoying
 - Going to add an introductory message whenever it joins a server
+- If you want to see a command added to Wombo Bot just email me.
 
 ## Developer's Note
 This is my first discord bot, and one of my first nodejs projects, if you have any feedback for me, or some tips you can reach me at sjalapati42@gmail.com
