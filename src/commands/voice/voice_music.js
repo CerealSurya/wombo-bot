@@ -5,7 +5,54 @@ const Discord = require('discord.js');
 const { resolve } = require('../staff/staff_limiter');
 
 function queue_func(receivedMessage, serverque, position){
-    if (!receivedMessage.member.voice.channel){return receivedMessage.channel.send("You have to be in a voice channel to use this command")};
+    if (serverque && serverque.connection.player.dispatcher != null){
+        const sender_channel = receivedMessage.member.voice.channel;
+        const member = receivedMessage.guild.member(receivedMessage.author);
+        const bot_channel = serverque.connection.channel
+            if(bot_channel.id == sender_channel.id){
+                var voice_chat_size = bot_channel.members.size;
+                if(voice_chat_size == 2 || member.hasPermission('MANAGE_CHANNELS') || receivedMessage.member.roles.cache.some(x => x.name === 'music')){
+                    if(position.entry == 'clear_queue'){
+                        receivedMessage.channel.send('Cleared the Queue 👍')
+                        serverque.songs = [];
+                    }
+                    else if(position.entry == 'remove_song'){
+                        queue_func(receivedMessage, serverque, {entry:'print_queue'});
+                        receivedMessage.channel.send(`Which song would you like to remove. | Type 1 for the first song 2 for the second etc.`).then(() => {
+                            const filter = m => receivedMessage.author.id == m.author.id; 
+                            receivedMessage.channel.awaitMessages(filter, { time: 20000, max: 1, errors: ['time'] })
+                                .then(messages => {
+                                    var number = String(messages.first().content).replace(/\s+/g, ''); 
+                                    var number = parseInt(number);
+                                    console.log(number);
+                
+                                    try{
+                                        const da_song = serverque.songs[number-1].title;
+                                        serverque.songs.splice(number - 1, 1)
+                                        if (number == 1){
+                                            return receivedMessage.channel.send(`I have removed the **${da_song}** from the queue\nhowever, if this song is playing right now it is going to keep playing use the **?skip** command to skip it`)
+                                        }
+                                        else{return receivedMessage.channel.send(`Okay I have removed the **${da_song}** from the queue`)};
+                                    }
+                                    catch(err){
+                                        console.log(err);
+                                        return receivedMessage.channel.send('Something went wrong, make sure you typed in a number with no spaces.')
+                                    }
+                                    
+                                }) 
+                                .catch((err) => {
+                                    console.log(err);
+                                    receivedMessage.channel.send(`Whoops, you took too long, try again.`);
+                                    return
+                                });
+                        });
+                    }
+                }
+                else{
+                    receivedMessage.channel.send('Sorry, you need to either have **Manage channel** perms or have the **music** role to use this command.')
+                }
+            }
+    };
     var new_queue = false
     try{
         if (serverque.songs.length <2){
@@ -20,22 +67,21 @@ function queue_func(receivedMessage, serverque, position){
         var new_queue = true
     }
     var i;
-    if (position.entry == 'clear_queue'){
-        if (!serverque){return receivedMessage.channel.send('There is no queue for me to clear. Join up a voicechat and do `?play some song`')}
-        receivedMessage.channel.send('Cleared the Queue 👍')
-        serverque.songs = [];
-    };
-
     if (position.entry == 'print_queue' && serverque){
-        if (serverque.songs.length > 0){
+        if (serverque.connection.player.dispatcher == null){
+            receivedMessage.channel.send('There is no queue. Join up a voicechat and do `?play some song`');
+            return
+        }
+        else if(serverque.songs.length > 0){
             for (i = 0; i < serverque.songs.length; i++) {
                 receivedMessage.channel.send(`${i+1}. ${"`"}${serverque.songs[i].title}${"`"}`);
             }
         }
-        else{return receivedMessage.channel.send('There is no queue. Join up a voicechat and do `?play some song`')}
+        else{return receivedMessage.channel.send('There is no queue. Join up a voicechat and do `?play some song`')};
     }
     if (position.entry == 'match_my_song'){
         if (new_queue == false){
+            console.log('popcorn')
             for (i = 0; i < serverque.songs.length; i++) {
                 if (serverque.songs[i].title == position.title){
                     return i + 1;
@@ -46,37 +92,11 @@ function queue_func(receivedMessage, serverque, position){
             return 1;
         }    
     }
-    if (position.entry == 'remove_song'){
-        receivedMessage.channel.send(`Which song would you like to remove. | Type 1 for the first song 2 for the second etc.`).then(() => {
-            const filter = m => receivedMessage.author.id == m.author.id; 
-            receivedMessage.channel.awaitMessages(filter, { time: 20000, max: 1, errors: ['time'] })
-                .then(messages => {
-                    var number = String(messages.first().content).replace(/\s+/g, ''); 
-                    var number = parseInt(number);
-                    console.log(number);
-
-                    try{
-                        const da_song = serverque.songs[number-1].title;
-                        serverque.songs.splice(number - 1, 1)
-                        receivedMessage.channel.send(`Okay I have removed the **${da_song}** from the queue`)
-                    }
-                    catch(err){
-                        console.log(err);
-                        return receivedMessage.channel.send('Something went wrong, make sure you typed in a number with no spaces.')
-                    }
-                    
-                }) 
-                .catch((err) => {
-                    console.log(err);
-                    receivedMessage.channel.send(`Whoops, you took too long, try again.`);
-                    return
-                });
-        });
-    }
+   
 }
 async function yt_search(receivedMessage, serverQueue, queue, args, primaryCommand, yt_token){
     const voicechannel = receivedMessage.member.voice.channel;
-    if (!voicechannel){return receivedMessage.channel.send("You need to be in a voice channel for me to play music")}
+
 
     const perm = voicechannel.permissionsFor(receivedMessage.client.user);
 
@@ -131,13 +151,13 @@ async function yt_search(receivedMessage, serverQueue, queue, args, primaryComma
                 maxResults: 1,
                 type: ["Video"]
             }).then((response) =>{
-                console.dir(response.data.items[0].id.videoId)
                 let song_title = response.data.items[0].snippet.title;
                 var song_channel = response.data.items[0].snippet.channelTitle;
                 var song_thumbnail = response.data.items[0].snippet.thumbnails.default.url;
                 var song_url = 'https://www.youtube.com/watch?v=' + String(response.data.items[0].id.videoId);
                 song_title = String(song_title).split("&quot;").join('"');
                 song_title = String(song_title).split("&#39;").join("'");
+                song_title = String(song_title).split("&amp").join("&");
 
                 var song = {
                     title: song_title,
@@ -187,7 +207,6 @@ async function execute_play(receivedMessage, serverque, que, song, voicechannel)
             var connection = await voicechannel.join();
             queueobj.connection = connection;
             send_embedd(receivedMessage, song, serverque, queueobj);
-            console.log('first');
             play(receivedMessage, queueobj.songs[0], que);
         } catch (err) {
             console.log(err);
@@ -195,21 +214,82 @@ async function execute_play(receivedMessage, serverque, que, song, voicechannel)
             return receivedMessage.channel.send(err);
         }
     } else { //If we are just adding songs to existing queue
-        if(serverque.songs.length == 0){
-            null
-        }
-        else{
-            console.log('second');
-            serverque.songs.push(song);
-            send_embedd(receivedMessage, song, serverque, serverque);
-        }
+        serverque.songs.push(song);
+        console.log('here')
+        send_embedd(receivedMessage, song, serverque, serverque);
+
     }
 }
 
 function skip(receivedMessage, serverque) {
-    if (!receivedMessage.member.voice.channel){return receivedMessage.channel.send("You have to be in a voice channel to use this command")};
-    if (!serverque){return receivedMessage.channel.send("There are no songs for me to skip...")}
-    serverque.connection.dispatcher.end();
+    if (serverque && serverque.connection.player.dispatcher != null){
+        const sender_channel = receivedMessage.member.voice.channel;
+        const member = receivedMessage.guild.member(receivedMessage.author);
+        const bot_channel = serverque.connection.channel
+        const queue_length = serverque.songs.length;
+            if(bot_channel.id == sender_channel.id){
+                var voice_chat_size = bot_channel.members.size;
+                if(voice_chat_size == 2 || member.hasPermission('MANAGE_CHANNELS') || receivedMessage.member.roles.cache.some(x => x.name === 'music')){
+                    if (queue_length > 1){
+                        receivedMessage.channel.send(`Skipped ⏩| Now Playing: **${serverque.songs[1].title}**`);
+                        serverque.connection.dispatcher.end();
+                        return
+                    }
+                    else{
+                        receivedMessage.channel.send(`Skipped ⏩| Now Playing: **No song queued**`);
+                        serverque.connection.dispatcher.end();
+                        return
+                    }
+                }
+                else{
+                    let counter_skip = 1
+                    function private_listen(receivedMessage, serverque){
+                        if (voice_chat_size > 3){var vote_number_skip = 2} //It is one lower then the amount of people in the chat cuz the person that sent this already voted
+                        else if(voice_chat_size == 3){var vote_number_skip = 1}
+                        receivedMessage.channel.send(`${String(vote_number_skip)} more votes to skip **${serverque.songs[0].title}** | Type 's' if you want to skip or 'n' for no skip.`).then(() => {
+                            const filter = m => receivedMessage.author.id != m.author.id; 
+                            receivedMessage.channel.awaitMessages(filter, { time: 20000, max: vote_number_skip, errors: ['time'] })
+                                .then(messages => {
+                                    var da_content = String(messages.first().content); 
+                                    console.log(da_content);
+                                    if (da_content == 's'){
+                                        counter_skip++;
+                                        if (counter_skip >= vote_number_skip){
+                                            if (queue_length > 1){
+                                                receivedMessage.channel.send(`Skipped ⏩| Now Playing: **${serverque.songs[1].title}**`);
+                                                serverque.connection.dispatcher.end();
+                                                return
+                                            }
+                                            else{
+                                                receivedMessage.channel.send(`Skipped ⏩| Now Playing: **No song queued**`);
+                                                serverque.connection.dispatcher.end();
+                                                return
+                                            }
+
+                                        }
+                                        else{
+                                            private_listen(receivedMessage, serverque);
+                                        };
+                                    };
+                                    if (da_content == 'n'){
+                                        counter_skip = 1
+                                        return receivedMessage.channel.send(`Skip has failed, **${serverque.songs[0].title}** will continue playing`);
+                                    }
+                                }) 
+                                .catch((err) => {
+                                    console.log(err);
+                                    receivedMessage.channel.send(`nvm, you took too long.`);
+                                    return;
+                                });
+                        });
+                    }
+                    private_listen(receivedMessage, serverque);
+                }
+            }
+    }
+    else{
+        return receivedMessage.channel.send("There are no songs for me to skip...")
+    }
 }
 
 function play(receivedMessage, song, que) {
@@ -218,7 +298,8 @@ function play(receivedMessage, song, que) {
     if (!song){
         serverque.songs == [];
         que.delete(receivedMessage.guild.id);
-        return
+        serverque.connection.voice.channel.leave();
+        return;
     }
 
     const dispatcher = serverque.connection
@@ -230,13 +311,31 @@ function play(receivedMessage, song, que) {
         .on("error", error => console.error(error));
 }
 
-function pause(receivedMessage ,serverque){
-    serverque.connection.dispatcher.pause();
-    receivedMessage.channel.send('Paused 🛑')
-}
-function resume(receivedMessage ,serverque){
-    serverque.connection.dispatcher.resume();
-    receivedMessage.channel.send('Resumed 🎵')
+function pause(receivedMessage ,serverque, position){
+    if (serverque && serverque.connection.player.dispatcher != null){
+        const sender_channel = receivedMessage.member.voice.channel;
+        const member = receivedMessage.guild.member(receivedMessage.author);
+        const bot_channel = serverque.connection.channel
+            if(bot_channel.id == sender_channel.id){
+                var voice_chat_size = bot_channel.members.size;
+                if(voice_chat_size == 2 || member.hasPermission('MANAGE_CHANNELS') || receivedMessage.member.roles.cache.some(x => x.name === 'music')){
+                    if(position == 'pause'){
+                        serverque.connection.dispatcher.pause();
+                        receivedMessage.channel.send('Paused 🛑')
+                    }
+                    else if(position == 'resume'){
+                        serverque.connection.dispatcher.resume();
+                        receivedMessage.channel.send('Resumed 🎵')
+                    }
+                    else{return};
+                }
+                else{
+                    receivedMessage.channel.send('Sorry, you need to either have **Manage channel** perms or have the **music** role to use this command.')
+                }
+            }
+    }
+    else{return receivedMessage.channel.send('There is no song for me to skip.')}
 }
 
-module.exports = { yt_search,execute_play, skip, queue_func, pause, resume }
+
+module.exports = { yt_search,execute_play, skip, queue_func, pause }

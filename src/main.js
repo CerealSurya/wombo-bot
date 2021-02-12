@@ -4,7 +4,7 @@ const { vcroastcommand, disconnectcommand, joincommand, test } = require('./comm
 const { setnick, setrole, createrole  } = require('./commands/staff/staff_general.js'); 
 const { general_help, staff_help, voice_help } = require('./commands/help.js');
 const { blacklistcommand, roleName, voteblacklist, rolewhite } = require('./commands/staff/staff_limiter.js');
-const { yt_search, skip, queue_func, pause, resume } = require('./commands/voice/voice_music.js');
+const { yt_search, skip, queue_func, pause } = require('./commands/voice/voice_music.js');
 const Discord = require('discord.js');
 const client = new Discord.Client()
 const dotenv = require('dotenv');
@@ -40,7 +40,6 @@ client.on('message', (receivedMessage) => {
 
 
 async function processCommand(receivedMessage) {
-
     //TODO: Set up an intro message, wnenever it joins a server it says hi
     let fullCommand = receivedMessage.content.substr(1); // Remove the leading exclamation mark
     let sentence = receivedMessage.content.substr(8); // gets everything after the request
@@ -76,20 +75,10 @@ async function processCommand(receivedMessage) {
 
 async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand, extra_command){
     if (primaryCommand == "roast") { //Runnning said commands 
-        roastcommand(args, receivedMessage);
+        return roastcommand(args, receivedMessage);
 
-    } else if(primaryCommand == "vcroast"){
-        return
-        //vcroastcommand(args ,receivedMessage, roasts);
-    } else if(primaryCommand == "vccompliment"){
-        return
-        //vcroastcommand(args, receivedMessage, compliments)
-    }  else if(primaryCommand == "compliment"){
-
-        compliment(args, receivedMessage);
     } else if(primaryCommand == "join"){
-
-        joincommand(args, receivedMessage);
+        return joincommand(args, receivedMessage);
     } 
     else if(primaryCommand == "help" && receivedMessage.content.substr(6) == ''){
         const embed = new Discord.MessageEmbed()
@@ -103,17 +92,17 @@ async function commands(primaryCommand, args, receivedMessage, sentence, serverQ
         .setThumbnail(client.user.avatarURL())
         .setColor(0x99ccff)
         receivedMessage.author.send(embed);
-        receivedMessage.reply("Just DM'd the commands");
+        return receivedMessage.reply("Just DM'd the commands");
 
     }
     else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'general'){
-        general_help(receivedMessage);
+        return general_help(receivedMessage);
     }
     else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'staff'){
-        staff_help(receivedMessage);
+        return staff_help(receivedMessage);
     }
     else if(primaryCommand == "help" && receivedMessage.content.substr(6) == 'voice'){
-        voice_help(receivedMessage);
+        return voice_help(receivedMessage);
     }
     else if(primaryCommand == "request"){
         if (args.length == 0){
@@ -125,33 +114,31 @@ async function commands(primaryCommand, args, receivedMessage, sentence, serverQ
             user.send(`${receivedMessage.author} requested -  ${sentence}`);
             receivedMessage.author.send('I have put in your request');
         };
-     }
-    else if(primaryCommand == "disconnect" || primaryCommand == "leave"){
-        disconnectcommand(args, receivedMessage);
-     }
+        return 
+    }
     else if(primaryCommand == "coinflip" || primaryCommand == "flipcoin"){
-       coinflip(args, receivedMessage);
+        return coinflip(args, receivedMessage);
     }
     else if(primaryCommand == "setnick"){
-        setnick(args, receivedMessage);
+        return setnick(args, receivedMessage);
     }else if(primaryCommand == "setrole"){
-        setrole(args, receivedMessage);
+        return setrole(args, receivedMessage);
     }else if(primaryCommand == "createrole"){
-        createrole(args, receivedMessage, false, false);
+        return createrole(args, receivedMessage, false, false);
     }else if(primaryCommand == "roastidea"){
-        roastidea(args, receivedMessage);
+        return roastidea(args, receivedMessage);
     }
     else if(primaryCommand == "complimentidea"){
-        complimentidea(args, receivedMessage);
+        return complimentidea(args, receivedMessage);
      }
     else if(primaryCommand == "blacklist" || primaryCommand == "ignore"){
-        blacklistcommand(args, receivedMessage, 'blacklist', 'no');
+        return blacklistcommand(args, receivedMessage, 'blacklist', 'no');
      }
     else if(primaryCommand == "unblacklist" || primaryCommand == "unignore"){
-        blacklistcommand(args, receivedMessage, 'unblacklist', 'no');
+        return blacklistcommand(args, receivedMessage, 'unblacklist', 'no');
      }
     else if(primaryCommand == "voteblacklist" || primaryCommand == "voteignore" || primaryCommand == "blacklistvote" || primaryCommand == "ignorevote"){
-        voteblacklist(args, receivedMessage);
+        return voteblacklist(args, receivedMessage);
      }
     else if(primaryCommand == "introduce"){
         const anotherembed = new Discord.MessageEmbed()
@@ -162,37 +149,44 @@ async function commands(primaryCommand, args, receivedMessage, sentence, serverQ
         .addField('\u200b', '\n[Invite link](https://discordbotlist.com/bots/wombo)', true)
         .setThumbnail(client.user.avatarURL())
         .setColor(0x99ccff)
-        receivedMessage.channel.send(anotherembed);
+        return receivedMessage.channel.send(anotherembed);
     }
     else if(primaryCommand == "servercount"){
-        receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
+        return receivedMessage.channel.send(`I am in **${client.guilds.cache.size}** servers`);
     }
-    if(primaryCommand == "play" || primaryCommand == "p") {
-        yt_search(receivedMessage, serverQueue, queue, args, primaryCommand, yt_token)
+    else if(primaryCommand == "play" || primaryCommand == "p") {
+        if (!receivedMessage.member.voice.channel){return receivedMessage.channel.send("You have to be in a voice channel to use this command")};
+        return yt_search(receivedMessage, serverQueue, queue, args, primaryCommand, yt_token)
     }
-    else if(!client.user.voiceConnection){ //Checking if the bot is in a voicechannel before we play the voice channel commands music
-        if (primaryCommand == "skip") {
-            skip(receivedMessage, serverQueue);
-        }
-        else if (primaryCommand == "queue" || primaryCommand == "que") {
-            queue_func(receivedMessage, serverQueue, {entry:'print_queue'});
-        }
-        else if (primaryCommand == "clear" && extra_command == 'queue') {
-            queue_func(receivedMessage, serverQueue, {entry:'clear_queue'});
-        }
-        else if (primaryCommand == "remove" && extra_command == 'song') {
-            queue_func(receivedMessage, serverQueue, {entry:'print_queue'});
-            queue_func(receivedMessage, serverQueue, {entry:'remove_song'});
-        }
-        else if (primaryCommand == "pause") {
-            pause(receivedMessage, serverQueue);
-        }
-        else if (primaryCommand == "resume") {
-            resume(receivedMessage, serverQueue);
-        }
-
+    else if(receivedMessage.member.voice.channel){ //Checking if the bot and user is in a voicechannel before we play the voice channel commands music
+        const channel = receivedMessage.member.voice.channel;
+        await channel.members.forEach((x) => { //Going to need to change this later to have a dialogue if the bot is not in a channel
+            if (x.id == client.user.id){
+                if (primaryCommand == "skip" || primaryCommand == "s") {
+                    return skip(receivedMessage, serverQueue);
+                }
+                else if(primaryCommand == "disconnect" || primaryCommand == "leave"){
+                    return disconnectcommand(receivedMessage, queue);
+                }
+                else if (primaryCommand == "queue" || primaryCommand == "que") {
+                    return queue_func(receivedMessage, serverQueue, {entry:'print_queue'});
+                }
+                else if (primaryCommand == "clear" && extra_command == 'queue') {
+                    return queue_func(receivedMessage, serverQueue, {entry:'clear_queue'});
+                }
+                else if (primaryCommand == "remove" && extra_command == 'song') {
+                    return queue_func(receivedMessage, serverQueue, {entry:'remove_song'});
+                }
+                else if (primaryCommand == "pause") {
+                    return pause(receivedMessage, serverQueue, 'pause');
+                }
+                else if (primaryCommand == "resume") {
+                    return pause(receivedMessage, serverQueue, 'resume');
+                }
+            }
+        });
     }
-    else{return receivedMessage.channel.send('I am not in a voicechat use `?join` to get me in one.')};
+    else if(!receivedMessage.member.voice.channel){return receivedMessage.channel.send('You need to be in a voice channel to use this command')};
 }
 client.login(bot_secret_token);
 

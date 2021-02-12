@@ -33,7 +33,7 @@ function general_help(receivedMessage){
 
 function voice_help(receivedMessage){
     const embed = new Discord.MessageEmbed()
-    .setTitle('Voicechat Commands are coming soon!')
+    .setTitle('Voicechat Commands')
     .addField('\u200b', '`?join`\nTo get Wombo bot to join the voicechat you are in')
     .addField('\u200b', '`?leave`\nTo get Wombo bot to disconnect from the voicechat you are in')
     .addField('\u200b', '`?play`\nWombo bot plays whatever song you want in your voicechat')
