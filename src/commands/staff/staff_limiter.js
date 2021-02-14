@@ -4,33 +4,33 @@ function resolve(x) {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(x);
-      }, 3000);
+      }, 3000); //promise to have an await
     });
 }
 
 var counter = 0;
 const roleName = '_wombo-ignore_';
-const rolewhite = '_wombo-allow_';
+const rolewhite = '_wombo-allow_'; //role names for blacklist and whitelist
 var check_sum = false;
 async function blacklistcommand(args, receivedMessage, command, vote){
     if (args.length > 0){
         if (vote == 'no'){
             let user = receivedMessage.author;
-            var member = receivedMessage.guild.member(user);
+            var member = receivedMessage.guild.member(user); //if a sender runs it
         }
         else{
-            check_sum = true;
+            check_sum = true; //if I ran the command
             var member = vote;
         }
 
-        if (member.hasPermission('MANAGE_ROLES') || check_sum ) {
+        if (member.hasPermission('MANAGE_ROLES') || check_sum ) { //check the correct perms
             console.log('This member can do the command');
             try{
                 if (vote == 'no'){
-                    var member = receivedMessage.mentions.members.first();  
+                    var member = receivedMessage.mentions.members.first();  //gets the first mention
                 }
                 else {
-                    var member = vote
+                    var member = vote //gets the person that started the voteblacklist
                 }
                 let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
 
@@ -47,20 +47,20 @@ async function blacklistcommand(args, receivedMessage, command, vote){
                             .then(message => message.delete({timeout: 3000}));
                         await resolve(1)
                         role = receivedMessage.guild.roles.cache.find(x => x.name === roleName);
-                        console.log('firsts');
+                        console.log('firsts'); //blacklist them
                         member.roles.add(role);
                     }
                     else if(command === 'unblacklist'){
-                        counter = 1;
+                        counter = 1; //when we are not ignonring them
                         receivedMessage.channel.send("For me to uningnore someone I have to be ignoring them first. do '?help' for more info");
                     }
                 } else {
-                    if (command === 'blacklist'){
+                    if (command === 'blacklist'){ //if the role is already there than we just add it to the person
                         console.log('seconds');
                         member.roles.add(role);
                     }
                     else if(command === 'unblacklist'){
-                        await member.roles.remove(role);
+                        await member.roles.remove(role); //or just remove it if we unblacklisting
                         counter = 0;
                     }
                 }
@@ -88,13 +88,13 @@ async function blacklistcommand(args, receivedMessage, command, vote){
 
 
 function voteblacklist(args, receivedMessage){
-    if (args.length > 0){
+    if (args.length > 0){ //if there was an @
         const member = receivedMessage.mentions.members.first();
         let counter = 1;
         let message_counter = false;
         function private_listen(args, receivedMessage){
             receivedMessage.channel.send(`ignore vote ${member.user.username} ${counter}/5\n(type ?yes to vote yes | type ?no to vote no) `).then(() => {
-                const filter = m => receivedMessage.author.id != m.author.id; 
+                const filter = m => receivedMessage.author.id != m.author.id;  //starts the vote, the sender can't be the one that startedit
                 receivedMessage.channel.awaitMessages(filter, { time: 20000, max: 1, errors: ['time'] })
                     .then(messages => {
                         var da_content = String(messages.first().content); 
@@ -102,14 +102,14 @@ function voteblacklist(args, receivedMessage){
                         if (da_content == '?yes'){
                             counter++;
                             if (counter >= 5){
-                                return blacklistcommand(args, receivedMessage, 'blacklist', member);
+                                return blacklistcommand(args, receivedMessage, 'blacklist', member); //if the vote was succesful, run the blacklist command
                             }
                             else{
-                                private_listen(args, receivedMessage);
+                                private_listen(args, receivedMessage); //loops the command if we don't have any votes
                             };
                         };
                         if (da_content == '?no'){
-                            counter = 1;
+                            counter = 1; //person declines
                             return receivedMessage.channel.send(`one person has declined. **${member.user.username}** you are safe for now.\n(the vote needs to be unanimous)`);
                         }
                     }) 
@@ -119,7 +119,7 @@ function voteblacklist(args, receivedMessage){
                     });
             });
         }
-        private_listen(args, receivedMessage);
+        private_listen(args, receivedMessage); //gotta start the function
 
     }
     else{

@@ -10,28 +10,28 @@ function disconnectcommand(receivedMessage, que){
         const member = receivedMessage.guild.member(receivedMessage.author);
         const serverque = que.get(receivedMessage.guild.id);
         const bot_channel = serverque.connection.channel;
-        if (serverque && serverque.connection.player.dispatcher != null){
-            if(bot_channel.id == sender_channel.id){
+        if (serverque && serverque.connection.player.dispatcher != null){ //making sure there is a queue
+            if(bot_channel.id == sender_channel.id){ //making sure the sender and the bot are in the same voice channel
                 var voice_chat_size = bot_channel.members.size;
                 if(voice_chat_size == 2 || member.hasPermission('MANAGE_CHANNELS') || receivedMessage.member.roles.cache.some(x => x.name === 'music')){
-                    receivedMessage.channel.send('okay bye 📭 ');
+                    receivedMessage.channel.send('okay bye 📭 '); //if the requirments are met than we leave
                     que.delete(receivedMessage.guild.id);
                     receivedMessage.member.voice.channel.leave();
                 }
-                else{
+                else{ //if the sender does not have the correct perms than we start a vote to kick the bot out of the vc
                     let counter_leave = 1
                     function private_listen(receivedMessage, serverque){
                         if (voice_chat_size > 3){var vote_number_leave = 2} //It is one lower then the amount of people in the chat cuz the person that sent this already voted
-                        else if(voice_chat_size == 3){var vote_number_leave = 1}
-                        receivedMessage.channel.send(`${String(vote_number_leave)} more votes to get me to leave this voicechat | Type 'l' if you want me to leave or 'n' for no.`).then(() => {
+                        else if(voice_chat_size == 3){var vote_number_leave = 1} //!this one
+                        receivedMessage.channel.send(`${String(vote_number_leave)} more votes to get me to leave this voicechat | Type 'l' if you want me to leave or just don't reply`).then(() => {
                             const filter = m => receivedMessage.author.id != m.author.id; 
                             receivedMessage.channel.awaitMessages(filter, { time: 20000, max: vote_number_leave, errors: ['time'] })
                                 .then(messages => {
                                     var da_content = String(messages.first().content); 
                                     console.log(da_content);
-                                    if (da_content == 'l'){
+                                    if (da_content == 'l'){ //if someone voted 
                                         counter_leave++;
-                                        if (counter_leave >= vote_number_leave){
+                                        if (counter_leave >= vote_number_leave){ //make sure that we have the correct number of votes to kick
                                             receivedMessage.channel.send('okay bye 📭 ')
                                             que.delete(receivedMessage.guild.id);
                                             receivedMessage.member.voice.channel.leave();
@@ -41,13 +41,9 @@ function disconnectcommand(receivedMessage, que){
                                             private_listen(receivedMessage, serverque);
                                         };
                                     };
-                                    if (da_content == 'n'){
-                                        counter_skip = 1
-                                        return receivedMessage.channel.send(`Command has failed, guess Im stayin here for a little while longer.🙂`);
-                                    }
                                 }) 
                                 .catch((err) => {
-                                    console.log(err);
+                                    console.log(err); //if time ran out
                                     receivedMessage.channel.send(`nvm, you took too long.`);
                                     return;
                                 });
@@ -58,17 +54,17 @@ function disconnectcommand(receivedMessage, que){
             }
         };
     }
-    catch(err){
+    catch(err){ //if there is no queue than we run this
         receivedMessage.channel.send('okay bye 📭 ')
         receivedMessage.member.voice.channel.leave();
-        console.log(err)
-        return
+        console.log(err) //TODO: There is a problem with this tho, we need to make sure the bot and the sender are in the same channel
+        return          //TODO its just a visual bug tho
     }
 };
 
 function joincommand(args, receivedMessage){
     if(receivedMessage.member.voice.channel){
-        if(!receivedMessage.guild.voiceConnection){
+        if(!receivedMessage.guild.voiceConnection){ //joins the vc that the sender is in
             receivedMessage.channel.send('Okay I joined 👍')
             receivedMessage.member.voice.channel.join();
 
@@ -79,23 +75,4 @@ function joincommand(args, receivedMessage){
         receivedMessage.reply("You gotta be in a voice channel for me to connect. ");
     };
 };
-function test(argument, receivedMessage, title){
-    if(receivedMessage.member.voice.channel){
-        if(!receivedMessage.guild.voiceConnection){
-            receivedMessage.member.voice.channel.join()
-                .then(connection =>{
-                    receivedMessage.channel.send(`Now playing ${title}`)
-                    const stream = ytdl(argument);
-                    const dispatcher = connection.play(stream);
-
-                    dispatcher.on('end', () => receivedMessage.member.voice.channel.leave());
-                })
-                .catch(console.error);
-        }
-    }
-    else{
-        receivedMessage.reply("You gotta be in a vc for me to join it. ");
-    };    
-    
-}
-module.exports = { disconnectcommand, joincommand, test }
+module.exports = { disconnectcommand, joincommand }

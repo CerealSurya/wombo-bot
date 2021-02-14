@@ -16,7 +16,7 @@ const roasts = [" ||You’re the reason God created the middle finger.|| ", "If 
 "Did you fall from Heaven? Because it looks like you landed on your face.", "Two wrongs don't make a right, take your parents for example.", "There is no vaccine for stupidity", "- ugly and stupid, no I am not insulting you, I am describing you",
 "Sorry sarcasm falls out of my mouth, like stupidity comes out of yours.", "stop calling yourself hot, the only thing you can turn on is the microwave", "I was going to give you a nasty look, but I see you already have one",
 "Beep. Beep. BEEP. BEEP, I am detecting a lot of stupidity coming from your direction.", " ur so fat you make nicado avocado look skinny"
-]
+] //list of roasts that I really should update
 
 const compliments = [" You’re that “Nothing” when people ask me what I’m thinking about. ", "You look great today.", " You’re a smart cookie.", "I bet you make babies smile.", "You have impeccable manners.",
 "I like your style.", "You have the best laugh.", "I appreciate you.", "You are the most perfect you there is.", "Our system of inside jokes is so advanced that only you and I get it. And I like that.",
@@ -24,7 +24,7 @@ const compliments = [" You’re that “Nothing” when people ask me what I’m
 "You’re more helpful than you realize.", "You have a great sense of humor.", "You’ve got all the right moves! ", "Is that your picture next to “charming” in the dictionary?",
 "Is there anything you can’t do!?", "I always learn so much when I’m around you.", " You’re the person that everyone wants on their team.", "You are the epitome of a good person.",
 "You have the best ideas.", " You’re incredibly thoughtful.", "On a scale of one to ten, you’re an eleven.", " You are a ray of sunshine.", "You’re a constant reminder that people can be good."
-]
+] //lists of compliments that I really should update
 
 const numberofroasts = roasts.length +1;
 const numberofcompliments = compliments.length +1;
@@ -34,13 +34,9 @@ const numberofcompliments = compliments.length +1;
 function roastcommand(args, receivedMessage) {
     if (args.length > 0) {
         var randnumber = (Math.floor(Math.random() * numberofroasts));
-        receivedMessage.channel.send(args + roasts[randnumber]);
+        receivedMessage.channel.send(`${args} ${roasts[randnumber]}`);
         console.log((Math.floor(Math.random() * numberofroasts)));
-
-        
-   
-        
-    }
+    } //makes sure that you mentioned someone than sends the roast in the chat
     else{
         receivedMessage.channel.send("You need to @ someone that you want to roast. Try ` ?roast [@urfriend]`");
     }
@@ -48,7 +44,7 @@ function roastcommand(args, receivedMessage) {
 
 function compliment(args,receivedMessage){
     if (args.length > 0) {
-        receivedMessage.channel.send(args + compliments[(Math.floor(Math.random() * numberofcompliments))]);
+        receivedMessage.channel.send(`${args} ${compliments[(Math.floor(Math.random() * numberofcompliments))]}`);
         console.log((Math.floor(Math.random() * numberofcompliments)));
     } else {
         receivedMessage.channel.send("You need to @ someone that you want to compliment them . Try `?compliment [@urfriend]`");
@@ -57,18 +53,18 @@ function compliment(args,receivedMessage){
 
 
 function roastidea(args, receivedMessage){
-    receivedMessage.author.send('Heres one - '+args + roasts[(Math.floor(Math.random() * numberofroasts))]);
+    receivedMessage.author.send(`Heres one - ${args} ${roasts[(Math.floor(Math.random() * numberofroasts))]}`);
     console.log((Math.floor(Math.random() * numberofroasts)));
 };
 
 function complimentidea(args, receivedMessage){
-    receivedMessage.author.send('Heres one - '+args + compliments[(Math.floor(Math.random() * numberofcompliments))]);
+    receivedMessage.author.send(`Heres one - ${args} ${compliments[(Math.floor(Math.random() * numberofcompliments))]}`);
     console.log((Math.floor(Math.random() * numberofcompliments)));
 };
 
 function coinflip(args, receivedMessage){
     var z = Math.floor(Math.random() * 10000000000);
-    var x = Math.floor(Math.random() * 1000);
+    var x = Math.floor(Math.random() * 1000); //some really unneccary math to do a coinflip
     console.log(x);
     z = z % 2; 
     console.log(z);

@@ -1,6 +1,6 @@
 
 const { roasts, compliments, roastcommand, compliment, ttscomplimentcommand, roastidea, complimentidea, ttsroastcommand, coinflip } = require('./commands/general/general_purpose.js');
-const { vcroastcommand, disconnectcommand, joincommand, test } = require('./commands/voice/voice_general.js');
+const { disconnectcommand, joincommand } = require('./commands/voice/voice_general.js');
 const { setnick, setrole, createrole  } = require('./commands/staff/staff_general.js'); 
 const { general_help, staff_help, voice_help } = require('./commands/help.js');
 const { blacklistcommand, roleName, voteblacklist, rolewhite } = require('./commands/staff/staff_limiter.js');
@@ -12,10 +12,11 @@ dotenv.config()
 const queue = new Map();
 const ytdl = require('ytdl-core');
 const { google } = require('googleapis');
+//^^^ Importing all our dependencies
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
-    client.user.setActivity('you type ?help', {type: 'WATCHING'}).catch(console.error);
+    client.user.setActivity('you type ?help', {type: 'WATCHING'}).catch(console.error); //setting status and starting bot
 
 })
 //! I think the error is with the way we define the variables in the import, we need to import them in the same order we exported them, or it could be the way we exported them idk
@@ -26,7 +27,7 @@ client.on('ready', () => {
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
 const bot_secret_token = process.env.TOKEN;
 const prefix = process.env.PREFIX;
-const yt_token = process.env.YOUTUBE_TOKEN;
+const yt_token = process.env.YOUTUBE_TOKEN; //loading our env variables
 
 client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) { // Prevent bot from responding to its own messages
@@ -50,7 +51,6 @@ async function processCommand(receivedMessage) {
     let user = receivedMessage.author;
     let member = receivedMessage.guild.member(user);
     let role = receivedMessage.guild.roles.cache.find(x => x.name === roleName); 
-    let whiterole = receivedMessage.guild.roles.cache.find(x => x.name === rolewhite); 
 
     const serverQueue = queue.get(receivedMessage.guild.id);
 
@@ -63,7 +63,7 @@ async function processCommand(receivedMessage) {
             commands(primaryCommand,args, receivedMessage, sentence, serverQueue, splitCommand, extra_command );
         }
         else{
-            return
+            return  //Making sure no one blacklisted can use the bot
         };
     } 
     else{
@@ -73,10 +73,13 @@ async function processCommand(receivedMessage) {
    
 }
 
-async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand, extra_command){
+async function commands(primaryCommand, args, receivedMessage, sentence, serverQueue, splitCommand, extra_command){ //function to run the commands
     if (primaryCommand == "roast") { //Runnning said commands 
         return roastcommand(args, receivedMessage);
 
+    }
+    else if(primaryCommand == "compliment"){
+        return compliment(args, receivedMessage);
     } else if(primaryCommand == "join"){
         return joincommand(args, receivedMessage);
     } 

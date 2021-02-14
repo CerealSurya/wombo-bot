@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 
 
 function staff_help(receivedMessage){
-
     const embed = new Discord.MessageEmbed()
     .setTitle('Staff Commands')
     .addField('\u200b', '`?ignore`\nignores whoever you mention, basically it means that I will ignore their commands to me (only one person at a time)')
@@ -24,7 +23,7 @@ function general_help(receivedMessage){
     .addField('\u200b', '`?coinflip`\nflip a coin')   
     .addField('\u200b', '`?request`\nIf you want a specific feature or new roast added to Wombo bot')
     .addField('\u200b', '`?roastidea`\nuse this command to get a free insult to use')
-    .addField('\u200b', '`?complimentidea`use this command to get a free compliment to use')
+    .addField('\u200b', '`?complimentidea`\nuse this command to get a free compliment to use')
     .addField('\u200b', '`?setnick`\ncan also be used to set or reset your own nickname (Your role needs to be below mine however)')
     .setThumbnail('https://i.ibb.co/D4m9fPg/general.png')
     .setColor(0x99ccff)
