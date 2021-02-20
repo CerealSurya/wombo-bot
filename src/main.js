@@ -189,7 +189,7 @@ async function commands(primaryCommand, args, receivedMessage, sentence, serverQ
             }
         });
     }
-    else if(!receivedMessage.member.voice.channel){return receivedMessage.channel.send('You need to be in a voice channel to use this command')};
+    //else if(!receivedMessage.member.voice.channel){return receivedMessage.channel.send('You need to be in a voice channel to use this command')};
 }
 client.login(bot_secret_token);
 
