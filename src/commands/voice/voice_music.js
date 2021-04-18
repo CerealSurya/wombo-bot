@@ -290,7 +290,7 @@ function skip(receivedMessage, serverque) {
 
 function play(receivedMessage, song, que) {
     const serverque = que.get(receivedMessage.guild.id);
-    console.log(song);
+    console.log(song, '__Play Function__');
     if (!song){ //if there is no other song in the queue, meaning we have finished the queue this runs
         serverque.songs == []; //resets the queue
         que.delete(receivedMessage.guild.id);
